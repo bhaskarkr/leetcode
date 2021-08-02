@@ -1,0 +1,38 @@
+class Solution {
+public:
+    
+    int solver(vector<string>& words, int index, unordered_map<char, int> letters, vector<int>& score,  int currSum) {
+        if(index >= words.size())
+            return currSum;
+        //0
+        int notConsider = solver(words, index + 1, letters, score, currSum);
+        
+        //1
+        int currScore = 0;
+        bool considerPossible = true;
+        int consider = 0;
+        unordered_map<char, int> currMap;
+        for(char c: words[index]) {
+            currMap[c]++;
+            if(currMap[c] > letters[c]) {
+                considerPossible = false;
+                break;
+            }
+        }
+        if(considerPossible) {
+            for(auto keyVal: currMap) {
+                letters[keyVal.first] -= keyVal.second;
+                currScore += keyVal.second * score[keyVal.first - 'a'];
+            }
+            consider = solver(words, index + 1, letters, score, currSum + currScore);
+        }
+        return max(notConsider, consider);
+    }
+    
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        unordered_map<char, int> lettersMap;
+        for(char c: letters)
+            lettersMap[c]++;
+        return solver(words, 0, lettersMap, score, 0);
+    }
+};
