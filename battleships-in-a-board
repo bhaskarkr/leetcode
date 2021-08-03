@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int countBattleships(vector<vector<char>>& board) {
+        int n = board.size();
+        int m = board[0].size();
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(board[i][j] == 'X') {
+                    ans++;
+                    board[i][j] = '.';
+                    int vertical = i + 1;
+                    int horizontal = j + 1;
+                    while(vertical < n && board[vertical][j] == 'X') {
+                        board[vertical++][j] = '.';
+                    }
+                    while(horizontal < m && board[i][horizontal] == 'X') {
+                        board[i][horizontal++] = '.';
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
