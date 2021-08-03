@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        queue<char> Q;
+        for(char c : senate) {
+            Q.push(c);
+        }
+        int status = 0;
+        while(Q.size() > 1) {
+            int d = 0, r = 0, nq = Q.size(), qn = Q.size();
+            while(nq--) {
+                char current = Q.front();
+                Q.pop();
+                if(status == 0 || status < 0 && current == 'D' || status > 0 && current == 'R') { 
+                    Q.push(current);
+                }
+                current == 'D' ? status-- : status++;
+                current == 'D' ? d++ : r++;
+            }
+            if(r == qn || d == qn) {
+                return ansCalculator(Q.front());
+            }
+        }
+        return ansCalculator(Q.front());
+    }
+    string ansCalculator(char c) {
+        return c == 'R' ? "Radiant" : "Dire";
+    }
+};
