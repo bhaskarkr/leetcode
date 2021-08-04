@@ -1,0 +1,11 @@
+class Solution {
+public:
+    bool validator(TreeNode* root, long minVal, long maxVal) {
+        if(!root)
+            return true;
+        return (root->val < maxVal && root->val > minVal) && validator(root->left, minVal, root->val) && validator(root->right, root->val, maxVal);
+    }
+    bool isValidBST(TreeNode* root) {
+        return validator(root, INT_MIN - 1L, INT_MAX + 1L);
+    }
+};
