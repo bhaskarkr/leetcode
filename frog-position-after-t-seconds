@@ -1,22 +1,20 @@
 class Solution {
 public:
-    
-    double dfs(vector<vector<int>>& matrix, int curr, double prob, int target, int tMax, int tCurr, int prev) {
-        
+    double dfs(vector<vector<int>>& matrix, int curr, double prob, int target, int tMax, int tCurr, int prev) { 
         int childSize = matrix[curr].size() - 1;
-        if(curr == target) {
-            if(childSize == 0)
-                return tCurr > tMax ? 0 : prob;
-            else
-                return tCurr != tMax ? 0 : prob;
+        if(tCurr > tMax) {
+            return 0;
         }
-        double temp = 0;
+        if(curr == target) {
+            return childSize == 0 || tCurr == tMax ? prob : 0;
+        }
+        double tempProb = 0;
         for(int i = 0; i < matrix[curr].size(); i++) {
-            if(ans == 0 && matrix[curr][i] != prev) {
-                temp = max(temp, dfs(matrix, matrix[curr][i], prob/childSize, target, tMax, tCurr + 1, curr));
+            if(matrix[curr][i] != prev) {
+                tempProb = max(tempProb, dfs(matrix, matrix[curr][i], prob/childSize, target, tMax, tCurr + 1, curr));
             }
         }
-        return temp;
+        return tempProb;
     }
     double frogPosition(int n, vector<vector<int>>& edges, int t, int target) {
         vector<vector<int>> matrix(n+1);
