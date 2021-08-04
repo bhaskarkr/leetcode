@@ -1,0 +1,31 @@
+class Solution {
+public:
+    
+    double dfs(vector<vector<int>>& matrix, int curr, double prob, int target, int tMax, int tCurr, int prev) {
+        
+        int childSize = matrix[curr].size() - 1;
+        if(curr == target) {
+            if(childSize == 0)
+                return tCurr > tMax ? 0 : prob;
+            else
+                return tCurr != tMax ? 0 : prob;
+        }
+        double temp = 0;
+        for(int i = 0; i < matrix[curr].size(); i++) {
+            if(ans == 0 && matrix[curr][i] != prev) {
+                temp = max(temp, dfs(matrix, matrix[curr][i], prob/childSize, target, tMax, tCurr + 1, curr));
+            }
+        }
+        return temp;
+    }
+    double frogPosition(int n, vector<vector<int>>& edges, int t, int target) {
+        vector<vector<int>> matrix(n+1);
+        unordered_map<int, bool> visited;
+        matrix[1].push_back(0);
+        for(auto edge : edges) {
+            matrix[edge[0]].push_back(edge[1]);
+            matrix[edge[1]].push_back(edge[0]);
+        }
+        return dfs(matrix, 1, 1, target, t, 0, -1);
+    }
+};
