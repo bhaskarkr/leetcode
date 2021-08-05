@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minTillNow = INT_MAX, ans = 0;
+        for(int num : prices) {
+            ans = max(ans, num - minTillNow);
+            minTillNow = min(minTillNow, num);
+        }
+        return ans;
+    }
+};
