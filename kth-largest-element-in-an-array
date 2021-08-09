@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int l = 0;
+        int r = nums.size() - 1;
+        int ansInd = nums.size() - k;
+        while(l<r) {
+            int pivot = quickSelect(nums, l, r);
+            
+            if(pivot == ansInd) {
+                break;
+            } else if(pivot > ansInd) {
+                r = pivot - 1;
+            } else
+                l = pivot + 1;
+        }
+        return nums[ansInd];
+    }
+    
+    int quickSelect(vector<int>& nums, int l, int r) {
+        int pivot = nums[l];
+        while(l<r) {
+            while(l<r && nums[r]>=pivot) 
+                r--;
+            nums[l] = nums[r];
+            while(l<r && nums[l]<=pivot) 
+                l++;
+            nums[r] = nums[l];
+        }
+        nums[l] = pivot;
+        return l;
+    }
+};
