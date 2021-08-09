@@ -1,0 +1,53 @@
+/**
+    TC - O(n)
+    SC - O(n)
+    Steps:
+        1. we will calculate the preProd array from left to right
+        2. Next, we will iterate and store the product from right in one var "right" 
+            and multiply ith with right(containing prod from i+1 to n-1)
+        3. update the right with current num[i]
+        4. return the preProd
+*/
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> prod(n, 1);
+        for(int i = 1; i < n; i++)
+            prod[i] = prod[i-1] * nums[i-1];
+        int right = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            prod[i] *= right;
+            right *=  nums[i];
+        }
+        return prod;
+    }
+};
+
+/*
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int product = 1;
+        int zeroes = 0;
+        for(int num: nums) {
+            if(num == 0) {
+                zeroes++;
+                if(zeroes > 1)
+                    return vector<int>(nums.size());
+            } else
+                product *= num;
+                
+        }
+        for(int &num: nums) {
+            if(zeroes == 1) {
+                num = (num == 0 ? product : 0);
+            } else
+                num =  product/num;
+        }
+            
+        return nums;
+    }
+};
+*/
