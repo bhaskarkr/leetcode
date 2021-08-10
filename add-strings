@@ -1,0 +1,31 @@
+/*
+    TC - O(Max(M, N))
+    SC - O(Max(M, N))
+    Steps:
+        1. We will iterate both the string from ends
+        2. unit place of sum of carry + num1 + num2 will be added to ans in the starting            position.
+        3. find the new carry i.e carry / 10
+        4. return ans
+*/
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int i = num1.length() - 1, j = num2.length() - 1;
+        int carry = 0;
+        string ans = "";
+        while(i>=0 || j >= 0) {
+            if(i>=0)
+                carry+=(num1[i--]-'0');
+            if(j >= 0)
+                carry+=(num2[j--]-'0');
+            //ans = to_string(carry % 10) + ans;
+            ans = (char)(carry % 10 + '0') + ans;
+            carry /= 10;
+        }
+        if(carry > 0) {
+            //ans = to_string(carry) + ans;
+            ans = (char)(carry + '0') + ans;
+        }
+        return ans;
+    }
+};
