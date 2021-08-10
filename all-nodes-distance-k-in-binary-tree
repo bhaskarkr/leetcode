@@ -1,0 +1,108 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+/*
+    TC - O(N)
+    SC - O(N)
+    Steps : 
+        1. make a map of parents for nodes using dfs only till target is not found
+        2. now we will use the BFS, starting with "target" in the queue
+        3. for BFS, we will maintain visited map
+            a. we will run the bfs "k" times.
+            b. for each node in the queue, we will insert the left, right, 
+                and parent only if they are nonNull and not visited
+            c. mark all the pushed as visited
+        4. pop all the element in the queue and return as vector
+*/
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*, TreeNode*> parent;
+        dfs(root, target, parent);
+        queue<TreeNode*> Q;
+        Q.push(target);
+        return bfs(Q, k, parent);
+    }
+    
+    vector<int> bfs(queue<TreeNode*> &Q, int k, unordered_map<TreeNode*, TreeNode*> &parent) {
+        unordered_map<TreeNode*, bool> visited;
+        vector<int> ans;
+        visited[Q.front()] = true;
+        while(k--) {
+            int nextNodes = Q.size();
+            while(nextNodes--) {
+                TreeNode* curr = Q.front();
+                Q.pop();
+                for(auto next : {curr->left, curr->right, parent[curr]}) {
+                    if(next && !visited[next]) {
+                        visited[next] = true;
+                        Q.push(next);
+                    }        
+                }
+            }
+        }
+        while(!Q.empty()) {
+            ans.push_back(Q.front()->val);
+            Q.pop();
+        } 
+        return ans;
+    }
+    
+    void dfs(TreeNode* root, TreeNode* target, unordered_map<TreeNode*, TreeNode*> &parent) {
+        if(!root || root == target)
+            return;
+        parent[root->left] = root;
+        dfs(root->left, target, parent);
+        parent[root->right] = root;
+        dfs(root->right, target, parent); 
+    }
+};
+
+/*
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*, TreeNode*> parent;
+        unordered_map<TreeNode*, bool> visited;
+        dfs(root, target, parent);
+        vector<int> ans;
+        findKnodes(target, k, 0, ans, visited);
+        TreeNode* node = target;
+        int c = 0;
+        while(parent[node]) {
+            findKnodes(parent[node], k, c + 1, ans, visited);
+            c++;
+            node = parent[node];
+        }
+        return ans;
+    }
+    
+    void findKnodes(TreeNode* root, int k, int c, vector<int> &ans, unordered_map<TreeNode*, bool> &visited) {
+        if(!root || visited[root])
+            return;
+        visited[root] = true;
+        if(c == k) {
+            ans.push_back(root->val);
+            return;
+        }
+        findKnodes(root->left, k, c + 1, ans, visited);
+        findKnodes(root->right, k, c + 1, ans, visited);
+    }
+    
+    void dfs(TreeNode* root, TreeNode* target, unordered_map<TreeNode*, TreeNode*> &parent) {
+        if(!root || root == target)
+            return;
+        parent[root->left] = root;
+        dfs(root->left, target, parent);
+        parent[root->right] = root;
+        dfs(root->right, target, parent); 
+    }
+};
+*/
