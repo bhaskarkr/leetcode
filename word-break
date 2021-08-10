@@ -1,0 +1,56 @@
+/* DP   TC - O(n^2) 
+        SC - O(n)
+        Steps:
+            1. make wordSet to easily find if substring exist or not
+            2. we will try to split the sub string of length "len" into 2 parts
+            3. for first part "0" to "start -1" and second part "start" to "len - start"
+            4. now we check if first part is found then only 
+                we try to find the second part in wordSet
+            5. if second part also exist then only we will mark DP[len] = true
+            6. return DP[s.length()]
+
+*/
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string> wordSet(wordDict.begin(), wordDict.end());
+        vector<bool> DP(s.length()+1);
+        DP[0] = true;
+        for(int len = 1; len <= s.length(); len++) {
+            for(int start = 0; start < len; start++) {
+                // check if substring of length "start" from "0" to "start -1" can be formed using words provided then only check for the second part
+                if(DP[start] && wordSet.find(s.substr(start, len - start)) != wordSet.end() ) {
+                    DP[len] = true;
+                }
+            }
+        }
+        return DP[s.length()];
+    }
+};
+
+
+/* MEMOIZATION TC - O(2^n) SC - O(n)
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string> wordSet(wordDict.begin(), wordDict.end());
+        vector<int> memory(s.length()+1, -1);
+        return solver(s, wordSet, 0, memory);
+    }
+    
+    bool solver(string &s, set<string> &wordSet, int start, vector<int> &memory) {
+        if(start >= s.length())
+            return memory[start] = 1;
+        if(memory[start] != -1)
+            return memory[start];
+        for(int end = start + 1; end <= s.length(); end++) {
+            if(wordSet.find(s.substr(start, end - start))!= wordSet.end() && solver(s, wordSet, end, memory)) 
+                return memory[start] = 1;
+        }
+        return memory[start] = 0;
+    }
+};
+
+
+*/
