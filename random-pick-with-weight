@@ -1,0 +1,30 @@
+/*
+    TC : pickIndex -> O(nlog(w)) n-> operations w-> weights
+    SC : O(w)
+    Steps:
+        1. make a preWeightSum array
+        2. for randWeight, find a random interger between 0 and RAND_MAX
+        3. convert this to 0 to 1 by dividing it with RAND_MAX
+        4. convert this (0, 1) to weight by multiplying it with preWeightSum.back(), say target
+        5. return the index of the weight by using binary search(basically upper bound) for target
+*/
+
+class Solution {
+public:
+    vector<int> preWeightSum;
+    Solution(vector<int>& w) {
+        for(int weight : w)
+            preWeightSum.push_back(weight + (preWeightSum.empty() ? 0 : preWeightSum.back()));
+    }
+    
+    int pickIndex() {
+        float randWeight = (((float) rand()) * preWeightSum.back()) / RAND_MAX;
+        return upper_bound(preWeightSum.begin(), preWeightSum.end(), randWeight) - preWeightSum.begin();
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(w);
+ * int param_1 = obj->pickIndex();
+ */
