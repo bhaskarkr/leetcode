@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+/*
+    TC - O(n) n-> number of nodes in the tree
+    SC - O(1)
+    Steps :
+        1. there are 3 possibilities for a node to be a common ancestor of p & q. Lets say either of the nodes will be found as 
+            a. curr and left child subtree
+            b. curr and right child subtree
+            c. left subtree and right subtree
+        2. once any of the combination found set "ans"
+        3. add a base condition for root as null and ans not null(since answer is already found)
+        4. return ans
+            
+*/
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode* ans = NULL;
+        solver(root, p, q, ans);
+        return ans;   
+    }
+    bool solver(TreeNode* root, TreeNode* p, TreeNode* q, TreeNode* &ans) {
+        if(!root || ans != NULL)
+            return false;
+        bool left = solver(root->left, p, q, ans);
+        bool right = solver(root->right, p, q, ans);
+        bool curr = (root == p || root == q);
+        if((left && right) || (curr && left) || (curr && right))
+            ans = root;
+        return left || right || curr;
+    }
+};
