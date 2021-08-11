@@ -1,0 +1,61 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    TC - O(N)
+    SC - O(N)
+    Steps:
+        1. we will take BFS approach
+        2. first we will push the root with column as 0, 
+        3. for subsequent left node we will push col - 1 and for right node we will push col + 1
+        4. for each pop we will add them to their respective index in Map, create vector if not already exist for the index.
+        5. we will maintain minIndex and maxIndex and keep it updated using column value.
+        6. now we will process the map and convert it to ans vector of vector.
+        7. we will iterate map from minIndex to maxIndex, and assign respective vector to the index from map
+        8. return ans
+*/
+
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        int minIndex = 1, maxIndex = -1;
+        unordered_map<int, vector<int>> map;
+        solver(root, minIndex, maxIndex, map);
+        vector<vector<int>> ans(map.size());
+        for(int i = minIndex, j = 0; i <= maxIndex; i++, j++) {
+            ans[j] = map[i];
+        }
+        return ans;
+    }
+    
+    void solver(TreeNode* root, int &minIndex, int &maxIndex, unordered_map<int, vector<int>> &map) {
+        if(!root)
+            return;
+        queue<pair<TreeNode*, int>> Q;
+        Q.push(make_pair(root, 0));
+        while(!Q.empty()) {
+            int n = Q.size();
+            while(n--) {
+                pair<TreeNode*, int> node = Q.front();
+                Q.pop();
+                minIndex = min(node.second, minIndex);
+                maxIndex = max(node.second, maxIndex);
+                if(map.find(node.second) == map.end())
+                    map[node.second] = vector<int>();
+                map[node.second].push_back(node.first->val);
+                if(node.first->left)
+                    Q.push(make_pair(node.first->left, node.second - 1)); 
+                if(node.first->right)
+                    Q.push(make_pair(node.first->right, node.second + 1)); 
+            }
+        }
+    }
+};
