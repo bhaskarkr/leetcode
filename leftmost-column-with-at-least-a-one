@@ -8,7 +8,7 @@
  * };
  */
 /*
-    TC - O(row*log(col))
+    TC - O(row+col)
     SC - O(1)
     Steps:
         1. we will start from top right corner
