@@ -11,10 +11,32 @@
     TC - O(row*log(col))
     SC - O(1)
     Steps:
+        1. we will start from top right corner
+        2. if current location is 0 then we will go down, otherwise we will go left
+        3. if col == dimen[1] (initialized value) return -1, otherwise col+1
+*/
+class Solution {
+public:
+    int leftMostColumnWithOne(BinaryMatrix &binaryMatrix) {
+        vector<int> dimen = binaryMatrix.dimensions();  
+        int row = 0, rowMax = dimen[0], col = dimen[1] - 1; 
+        while(row < rowMax && col >= 0) {
+            if(binaryMatrix.get(row, col) == 0)
+                row++;
+            else
+                col--;    
+        }
+        return (col == dimen[1] - 1) ? -1 : col + 1;
+    }
+};
+
+/*
+    TC - O(row*log(col))
+    SC - O(1)
+    Steps:
         1. for each row we will apply binary search
         2. for each finding of "1" we will update "ans" with min(ans, currColIndex)
         3. return ans if has has changed other wise return -1
-*/
 class Solution {
 public:
     int leftMostColumnWithOne(BinaryMatrix &binaryMatrix) {
@@ -36,3 +58,4 @@ public:
         return ans == INT_MAX ? -1 : ans;
     }
 };
+*/
