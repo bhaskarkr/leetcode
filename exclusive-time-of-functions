@@ -1,0 +1,50 @@
+/*
+    TC - O(N)
+    SC - O(N)
+    Steps:
+        1. we maintain a stack for start logs
+        2. for each log, we will convert it to int, for start -> 0 and end -> 1
+        3. now for each 0(start) log, we will push the index and time to stack
+        4. for each 1(end), we will pop from stack subtract the end time and top time to get the duration and add 1. 
+        5. add the duration the ans[index], and if stack if not empty it means it was idle for this duration. so we will subtract this duraion from ans[top.index]
+        6. return ans
+*/
+class Solution {
+public:
+    vector<int> getOperation(string log) {
+        int index = stoi(log.substr(0, log.find(':')));
+        log = log.substr(log.find(':') + 1);
+        int op = log.substr(0, log.find(':')) == "start" ? 0 : 1;
+        int time = stoi(log.substr(log.find(':') + 1));
+        /*
+            stringstream ss(log);
+            string temp, temp2, temp3;
+            getline(ss, temp, ':');
+            getline(ss, temp2, ':');
+            getline(ss, temp3, ':');
+            return vector<int> {stoi(index), (op=="start"? 0 : 1), stoi(time)};
+        */
+        return vector<int> {index, op, time};
+    }
+    
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        vector<int> ans(n);
+        stack<pair<int, int>> stk;
+        int background = 0;
+        for(int i = 0; i < logs.size(); i++) {
+            vector<int> log =  getOperation(logs[i]);
+            if(log[1]) {
+                pair<int, int> topLog = stk.top();
+                stk.pop();
+                int duration =  (log[2] - topLog.second + 1);
+                ans[log[0]] += duration;
+                if(!stk.empty()) {
+                    ans[stk.top().first] -= duration;
+                }
+            } else {
+                stk.push(make_pair(log[0], log[2]));
+            }
+        }
+        return ans;
+    }
+};
