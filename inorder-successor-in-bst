@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+/*
+    TC - O(N)
+    SC - O(1)
+    Steps:
+        1. we will maintain a prev node, which will point to the previous node travered in inorder traversal
+        2. if prev == target, we will make ans = curr node
+        3. return ans
+*/
+class Solution {
+public:
+    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+        TreeNode* prev = NULL;
+        TreeNode* ans = NULL;
+        inorder(root, p, prev, ans);
+        return ans;
+    }
+    void inorder(TreeNode* root, TreeNode* p, TreeNode* &prev, TreeNode* &ans) {
+        if(!root || ans != NULL)
+            return;
+        inorder(root->left, p, prev, ans);
+        if(prev == p)
+            ans = root;
+        prev = root;
+        inorder(root->right, p, prev, ans);
+    }
+};
