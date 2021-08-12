@@ -1,0 +1,47 @@
+/*
+    TC - O(Sum of A[i]log(A[i])) since we are first making the graph by traversing all element and while making the result we are using set for emails in sorted order which will be log(A[i]) for insertion
+    SC - (Sum of A[i])
+    Steps:
+        1. first we will maintain a map for each email and to accounts to which it belongs, ans visited for accounts
+        2. now we will start traversing each the account using dfs, with visited[index] false
+        3. DFS: we keep adding all emails in the emails set, and we again call dfs with indices belonging to each email(using emailToAccount) for the index.
+        4. return ans with name and emails as a vector
+*/
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        unordered_map<string, vector<int>> emailToAccounts;
+        for(int i = 0; i < accounts.size(); i++) {
+            for(int j = 1; j < accounts[i].size(); j++) {
+                if(emailToAccounts.find(accounts[i][j]) == emailToAccounts.end())
+                    emailToAccounts[accounts[i][j]] = vector<int>();   
+                emailToAccounts[accounts[i][j]].push_back(i);   
+            }
+        }
+        vector<vector<string>> ans;
+        vector<bool> visited(accounts.size()); 
+        for(int i = 0; i < accounts.size(); i++) {
+            if(visited[i])
+                continue;
+            string name  = accounts[i][0];
+            set<string> emails;
+            dfs(i, emails, accounts, emailToAccounts, visited);
+            vector<string> currAns{name};
+            currAns.insert(currAns.end(), emails.begin(), emails.end());
+            ans.push_back(currAns);
+        }
+        return ans;
+    }
+    
+    void dfs(int index, set<string> &emails, vector<vector<string>>& accounts, unordered_map<string, vector<int>> &emailToAccounts, vector<bool> &visited) {
+        if(visited[index])
+            return;
+        visited[index] = true;
+        for(int i = 1; i < accounts[index].size(); i++) {
+            emails.insert(accounts[index][i]);
+            for(auto neighbor : emailToAccounts[accounts[index][i]]) {
+                dfs(neighbor, emails, accounts, emailToAccounts, visited);
+            }
+        }
+    }
+};
