@@ -1,0 +1,36 @@
+/*
+    TC - O(N)
+    SC - O(1)
+    Steps:
+        1. we maintain 2 var, open - how many open bkt we need to add and close for close bkt.
+        2. for each open bkt
+            a. if close is odd, we will have to add 1 to open and subract 1 from close
+            b. we will add close += 2
+        3. for every close
+            a. we will subtract 1 from close
+            b. if close if negative, then we have to add 1 to open and 2(already subracted 1) to close
+        4. return open + close
+*/
+class Solution {
+public:
+    int minInsertions(string s) {
+        int open = 0;
+        int close = 0;
+        for(char c : s) {
+            if(c == '(') {
+                if(close%2) {
+                    open++;
+                    close--;
+                }
+                close+=2;   
+            } else {
+                close--;
+                if(close < 0) {
+                    open++;
+                    close+=2;
+                }
+            }
+        }
+        return open + close;
+    }
+};
