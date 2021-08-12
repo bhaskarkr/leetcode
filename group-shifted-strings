@@ -1,0 +1,37 @@
+/*
+    TC - O(Nlog(N))
+    SC - O(N)
+    Steps:
+        1. we will maintain a map for shifting key and list of words
+        2. key will be created using the diff of 2 consecutive character. If diff will be -ve then add 26 to it
+        3. make ans vector of vector by pushing all the value in map for key.
+        4. return ans
+*/
+
+class Solution {
+public:
+    
+    string getShifting(string s) {
+        string res = "";
+        for(int i = 1; i < s.length(); i++) {
+            int diff = s[i] - s[i-1];
+            if(diff < 0)
+                diff += 26;
+            res += to_string(diff + 'a');
+        }
+        return res;
+    }
+    
+    vector<vector<string>> groupStrings(vector<string>& strings) {
+        unordered_map<string, vector<string>> map;
+        for(string s :  strings) {
+            map[getShifting(s)].push_back(s);
+        }
+        vector<vector<string>> ans;
+        for(auto &words : map) {
+            // sort(words.second.begin(), words.second.end());
+            ans.push_back(words.second);
+        }
+        return ans;
+    }
+};
