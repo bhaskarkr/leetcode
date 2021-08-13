@@ -1,0 +1,55 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+    }
+
+    Node(int _val, Node* _next) {
+        val = _val;
+        next = _next;
+    }
+};
+*/
+/*
+    TC - O(N)
+    SC - O(1)
+    Steps:
+        1. we can use 2 pointer approach
+        2. base consition, if head is null, create a node map next to same node and return this node
+        3. use do while prev != curr, with 3 cases:
+            a. when curr(3) and prev(1), we can insert 2 and return head
+            b. when curr < prev then either insertValue < curr or  insertValue > prev, insert and return head
+        4. outside loop, when only 1 element(3) was there and insertVal is not different, add the insertVal to prev->next
+        5. return head
+*/
+class Solution {
+public:
+    Node* insert(Node* head, int insertVal) {
+        if(!head) {
+            head = new Node(insertVal);
+            head->next = head;
+            return head;
+        }
+        Node* prev = head;
+        Node* curr = head->next;
+        do{
+            if((prev->val <= insertVal && curr->val >= insertVal)
+              || (prev->val > curr->val && (insertVal >= prev->val || insertVal <= curr->val))) {
+                prev->next = new Node(insertVal, curr);
+                return head;
+            }
+            prev = curr;
+            curr = curr->next;
+        }while(prev != head);
+        prev->next = new Node(insertVal, curr);
+        return head;
+    }
+};
