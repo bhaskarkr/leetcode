@@ -1,0 +1,46 @@
+/*
+    TC - O(N)
+    SC - O(N)
+    Steps:
+        1. use stack, to store all numbers after multiplication and division
+        2. when we find a sign(+,-,*,/) or last char in "s"
+            a. if num is +ve, just push it to stack
+            b. if num is -ve, push -1*num
+            c. otherwise pop the top element from stack, 
+                and multiply or devide with "num"
+            d. set sign to current sign, and num = 0
+        3. return sum of all element in stack
+*/
+class Solution {
+public:
+    int calculate(string s) {
+        stack<int> stk;
+        char sign = '+';
+        int num = 0;
+        for(int i = 0; i < s.length(); i++) {
+            char c = s[i];
+            if(isdigit(c)) {
+                num = num * 10 + (c - '0');
+            }
+            if((!isdigit(c) && c != ' ') || i == s.length() - 1 ){
+                if(sign == '-')
+                    stk.push(-1*num);
+                else if(sign == '+')
+                    stk.push(num);
+                else {
+                    int temp = stk.top();
+                    stk.pop();
+                    stk.push(sign == '*' ? temp * num : temp / num);
+                }
+                num = 0;
+                sign = c;
+            }
+        }
+        int ans = 0;
+        while(!stk.empty()) {
+            ans+=stk.top();
+            stk.pop();
+        }
+        return ans;
+    }
+};
