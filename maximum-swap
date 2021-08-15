@@ -1,0 +1,30 @@
+/*
+    TC - O(N)
+    SC - O(1)
+    Steps:
+        1. convert to string and traverse from right
+        2. if current >max, update max and maxindex
+        3. else if current < max, update leftIndex with currIndex and rightIndex with maxIndex
+        4. if leftIndex not changed, return num itself, as it is already max
+        5. swap the left & right, and return 
+*/
+class Solution {
+public:
+    int maximumSwap(int num) {
+        int leftIndex = -1, rightIndex = -1, maxDigit = -1, maxDigitIndex = -1;
+        string numstr = to_string(num);
+        for(int i = numstr.length() - 1; i >= 0; i--) {
+            if(maxDigit < (numstr[i] - '0')) {
+                maxDigit = numstr[i] - '0';
+                maxDigitIndex = i;
+            } else if(numstr[i] - '0' < maxDigit) {
+                leftIndex = i;
+                rightIndex = maxDigitIndex;
+            }
+        }
+        if(leftIndex < 0)
+            return num;
+        swap(numstr[leftIndex], numstr[rightIndex]);
+        return stoi(numstr);
+    }
+};
