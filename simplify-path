@@ -1,0 +1,34 @@
+/*
+    TC - O(N)
+    SC - O(N)
+    Steps:
+        1. use stack for directories
+        2. use stringstream for split, getline(ss, curr, "/"), populate the curr with the first split
+        3. if "." or empty string, then do nothing
+        3. if "..", then check if stack not empty, then pop
+        4. else push the "curr"
+        5. pop all element and append to ans string, ans += "/" + curr
+        6. return "/" if "ans" is empty otherwise "ans"
+*/
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+        vector<string> stk;
+        string ans = "", curr;
+        stringstream ss(path);
+        while(getline(ss, curr, '/')) {
+            if(curr=="." || curr == "")
+                continue;
+            else if(curr == "..") {
+                 if(!stk.empty())
+                     stk.pop_back();
+            }
+            else
+                stk.push_back(curr);    
+        }
+        for(string dir : stk)
+            ans += "/" + dir;
+        return ans.empty() ? "/" : ans;
+    }
+};
