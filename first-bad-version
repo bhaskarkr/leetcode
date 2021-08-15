@@ -1,0 +1,24 @@
+// The API isBadVersion is defined for you.
+// bool isBadVersion(int version);
+/*
+    TC - O(log(n))
+    SC - O(1)
+    Steps:
+        1. use binary search
+        2. "l" will point to first occurance of bad version
+*/
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int l = 1, r = n;
+        while(l<=r) {
+            int m = r - (r-l) / 2;
+            if(!isBadVersion(m)) {
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return l;
+    }
+};
