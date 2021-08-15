@@ -1,0 +1,50 @@
+/*
+    TC - O(N)
+    SC - O(1)
+    Steps:
+        1. use a pointer "index", until which the processing is done
+        2. base case, no more char left to process
+        3. for first number we don't have '(', but have for children, so if statement is added to increment "index"
+        4. create the num and sign, and create a "root" node with it
+        5. now, if '(' is there, then process left child
+            and if again '(' is there, then process right child
+        6. increment "index" for ')' for "root"
+        7. return root
+        
+*/
+class Solution {
+public:
+    TreeNode* str2tree(string &s) {
+        int index = 0;
+        return helper(s, index);
+        
+    }
+    TreeNode* helper(string &s, int &index) {
+        if(index >= s.length())
+            return NULL;
+        
+        int num = 0, sign = 1;
+        // opening
+        if(s[index] == '(')
+            index++;
+        // create current num
+        while(isdigit(s[index]) || s[index] == '-') {
+            if(s[index] == '-')
+                sign = -1;
+            else
+                num = num*10 + (s[index] - '0');
+            index++;
+        }
+        // create current node
+        TreeNode* root = new TreeNode(sign*num);     
+        // children
+        if(s[index] == '(') {
+            root->left = helper(s, index);
+            if(s[index] == '(')
+                root->right = helper(s, index);
+        }
+        // closing
+        index++;
+        return root;
+    }
+};
