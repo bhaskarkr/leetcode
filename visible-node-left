@@ -1,0 +1,18 @@
+void helper(Node* root, int height, int &maxHeight, int &ans) {
+  if(!root)
+    return;
+  if(height > maxHeight) {
+    ans++;
+    maxHeight = height;
+  }
+  helper(root->left, height + 1, maxHeight, ans);
+  helper(root->right, height + 1, maxHeight, ans);
+}
+
+int visibleNodes(Node* root) {
+  // Write your code here
+  int maxHeight = 0;
+  int ans = 0;
+  helper(root, 1, maxHeight, ans);
+  return ans;
+}
