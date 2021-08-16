@@ -1,0 +1,38 @@
+/*
+struct Node {
+  int data;
+  Node *next;
+  Node(int x) : data(x), next(NULL) {}
+};
+*/
+
+
+Node* reverseEven(Node *root) {
+  Node* prev = NULL;
+  Node* curr = root;
+  while(curr && curr->data%2 == 0) {
+     Node* temp  = curr->next;
+     curr->next = prev;
+     prev = curr;
+     curr = temp;
+  }
+  root->next = curr;
+  return prev;
+}
+
+Node* reverse(Node *head) {
+  // Write your code here
+  Node *curr = head;
+  Node *temp = new Node(123);
+  temp->next = head;
+  Node *prev = temp;
+  while(curr) {
+    if(curr->data%2 == 0) {
+      prev->next = reverseEven(curr);
+    }
+    prev = curr;
+    curr = curr->next;
+  }
+  
+  return temp->next;
+}
