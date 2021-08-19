@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string s = "";
+        preOrder(root, s);
+        return s;
+    }
+    
+     void preOrder(TreeNode* root, string &s) {
+        if(!root)
+            return;
+        s.append(to_string(root->val) + ';');
+        preOrder(root->left, s);
+        preOrder(root->right, s);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if(data == "")
+            return NULL;
+        stringstream ss = stringstream(data);
+        string numStr;
+        vector<int> nums;
+        int pos = 0;
+        while(getline(ss, numStr, ';')) {
+            nums.push_back(stoi(numStr));
+        }
+        TreeNode* root = buildTree(nums, INT_MIN, INT_MAX, pos);
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int> &nums, int minVal, int maxVal, int &pos) {
+        if(pos >= nums.size())
+            return NULL;
+        int num = nums[pos];
+        if(num < minVal || num > maxVal) {
+            return NULL;   
+        }
+        TreeNode* root = new TreeNode(num);
+        pos++;
+        root->left = buildTree(nums, minVal, num, pos);
+        root->right = buildTree(nums, num, maxVal, pos);
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec* ser = new Codec();
+// Codec* deser = new Codec();
+// string tree = ser->serialize(root);
+// TreeNode* ans = deser->deserialize(tree);
+// return ans;
