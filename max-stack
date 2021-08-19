@@ -1,0 +1,54 @@
+class MaxStack {
+public:
+    /** initialize your data structure here. */
+    stack<pair<int, int>> stk;
+    MaxStack() {
+        
+    }
+    
+    void push(int x) {
+        int tempMax = stk.empty() ? x : max(x, stk.top().second);
+        stk.push(make_pair(x, tempMax));
+    }
+    
+    int pop() {
+        int top = stk.top().first;
+        stk.pop();
+        return top;
+    }
+    
+    int top() {
+        int top = stk.top().first;
+        return top;
+    }
+    
+    int peekMax() {
+        int topMax = stk.top().second;
+        return topMax;
+    }
+    
+    int popMax() {
+        int maxTop = stk.top().second;
+        stack<int> temp;
+        while(stk.top().second != stk.top().first) {
+            temp.push(stk.top().first);
+            pop();
+        }
+        pop();
+        while(!temp.empty()) {
+            push(temp.top());
+            temp.pop();
+        }
+        return maxTop;
+    }
+};
+
+/**
+ * Your MaxStack object will be instantiated and called as such:
+ * MaxStack* obj = new MaxStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->peekMax();
+ * int param_5 = obj->popMax();
+ */
