@@ -1,24 +1,47 @@
+TC - O(n*n)
+SC - O(1)
 class Solution {
 public:
     int numFriendRequests(vector<int>& ages) {
-        sort(ages.begin(), ages.end());
-        for(int &a : ages)
-            a = a*2;
         int ans = 0;
-        int prev = 0;
-        for(int i = ages.size() - 1; i >= 0; i--) {
-            int l = 0, r = i - 1;
-            int minAge = ages[i]/2 + 14;
-            if(i < ages.size() - 1 && ages[i + 1] == ages[i] && minAge < ages[i]) {
-                ans+=prev; 
-                continue;
-            }
-            int index = upper_bound(ages.begin(), ages.begin() + i, minAge) - ages.begin();
-            if(index < i) {
-                ans+=(i-index);
-                prev = (i-index);
-            }
+        unordered_map<int, int> map;
+        for(int num : ages)
+            map[num]++;
+        for(auto [key1, val1] : map) {
+            for(auto [key2, val2] :  map)
+                ans += isValidFR(key1, key2) ? (val1 * (key1 == key2 ? val1 - 1 : val2)) : 0;
         }
         return ans;
     }
+    
+    bool isValidFR(int a, int b) {
+        return !((a <= 0.5*b + 7) || a > b);
+    }
 };
+
+TC - O(Nlog(N))
+SC - O(1)
+// class Solution {
+// public:
+//     int numFriendRequests(vector<int>& ages) {
+//         sort(ages.begin(), ages.end());
+//         for(int &a : ages)
+//             a = a*2;
+//         int ans = 0;
+//         int prev = 0;
+//         for(int i = ages.size() - 1; i >= 0; i--) {
+//             int l = 0, r = i - 1;
+//             int minAge = ages[i]/2 + 14;
+//             if(i < ages.size() - 1 && ages[i + 1] == ages[i] && minAge < ages[i]) {
+//                 ans+=prev; 
+//                 continue;
+//             }
+//             int index = upper_bound(ages.begin(), ages.begin() + i, minAge) - ages.begin();
+//             if(index < i) {
+//                 ans+=(i-index);
+//                 prev = (i-index);
+//             }
+//         }
+//         return ans;
+//     }
+// };
