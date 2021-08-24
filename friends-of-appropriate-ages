@@ -1,5 +1,5 @@
-TC - O(n*n)
-SC - O(1)
+// TC - O(n*n)
+// SC - O(1)
 class Solution {
 public:
     int numFriendRequests(vector<int>& ages) {
@@ -19,8 +19,8 @@ public:
     }
 };
 
-TC - O(Nlog(N))
-SC - O(1)
+// TC - O(Nlog(N))
+// SC - O(1)
 // class Solution {
 // public:
 //     int numFriendRequests(vector<int>& ages) {
