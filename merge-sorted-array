@@ -1,0 +1,25 @@
+/*
+    TC - O(n+m)
+    SC - O(1)
+    Steps:
+        1. use 2 pointer to start from the ends of the twp vectors.
+        2. start populating the nums1 from the end, which ever is greater value
+        3. once loops overs, since nums1(0 to m - 1) are already in place, 
+            we only need to traverse the left over for the nums2.
+*/
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int i = m - 1, j = n - 1, k = m + n - 1;
+        while(i>=0 && j >= 0) {
+            if(nums1[i] >= nums2[j]) {
+                nums1[k--] = nums1[i--];
+            } else {
+                nums1[k--] = nums2[j--];
+            }
+        }
+        while(j >= 0)
+            nums1[k--] = nums2[j--];
+    }
+};
