@@ -1,3 +1,13 @@
+/*
+    TC - O(log(N - k))
+    SC - O(1)
+    Steps:
+        1. will find the left bound
+        2. range for left bound will be, 0 to arr.size() - k
+        3. use binary search and find mid, to check if mid is closer to x than mid + k
+            then move the right to mid other wise left to mid + 1
+        4. return the arr from left to left + k
+*/
 class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
