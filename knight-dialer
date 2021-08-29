@@ -1,0 +1,38 @@
+class Solution {
+public:
+    const vector<int> dx = {-1, 1, 2, 2, 1, -1, -2, -2};
+    const vector<int> dy = {2, 2, 1, -1, -2, -2, -1, 1};
+    int mod = 1000000007;
+    int knightDialer(int n) {
+        long ans = 0;
+        vector<vector<vector<int> > > DP(5001, vector<vector<int> >(4,vector <int>(3)));
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(i==1 && j==1 && n == 1) {
+                    ans+=1;
+                    continue;
+                }
+                ans = (ans + dfs(i, j, n, DP)) % mod;
+            }
+        }
+        return (int)ans;
+    }
+    
+    int dfs(int i, int j, int n, vector<vector<vector<int> > > &DP) {
+        if(i < 0 || j < 0 || i > 3 || j > 2 || (i == 3 && j != 1))
+            return 0;
+        if(n == 1)
+            return 1;
+        if(DP[n][i][j]) {
+              return DP[n][i][j];
+        } 
+        long tempAns = 0;
+        for(int d = 0; d < 8; d++) {
+            int ndx = i + dx[d];
+            int ndy = j + dy[d];
+            if(!(ndx < 0 || ndy < 0 || ndx > 3 || ndy > 2 || (ndx == 3 && ndy != 1)))
+                tempAns = (tempAns + dfs(ndx, ndy, n - 1, DP)) % mod;
+        }
+        return DP[n][i][j] = tempAns;
+    }
+};
