@@ -1,0 +1,29 @@
+class Solution {
+public:
+    
+    bool isValidCut(vector<int>& ribbons, int length, int k) {
+        int count = 0;
+        for(auto ribbon : ribbons) {
+            count += ribbon / length;
+            if(count >= k)
+                return true;
+        }
+        return false;   
+    }
+    
+    int maxLength(vector<int>& ribbons, int k) {
+        long sum = 0;
+        for(int ribbon : ribbons)
+            sum += ribbon;
+        int l = 1, r = sum / k, finalVal = 0;
+        while(l <= r) {
+            int m = (l + r) / 2;
+            if(isValidCut(ribbons, m, k)) {
+                finalVal = m;
+                l = m + 1;
+            } else
+                r = m - 1;
+        }
+        return finalVal;
+    }
+};
