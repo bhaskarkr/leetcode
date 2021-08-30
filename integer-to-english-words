@@ -1,0 +1,40 @@
+
+class Solution {
+public:
+    const vector<string>  LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+const vector<string> TENS = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+const vector<string> THOUSANDS = {"", "Thousand", "Million", "Billion"};
+    
+    string numberToWords(int num) {
+        if(num == 0)
+            return "Zero";
+        int thousand = 0;
+        string ans = "";
+        while(num) {
+            if(num % 1000) {
+                ans = solver(num % 1000) + THOUSANDS[thousand] + " " + ans;
+            }
+            num/=1000;
+            thousand++;
+        }
+        return trimfnc(ans);
+    }
+    
+    string solver(int num) {
+        if(num == 0)
+            return "";
+        if(num < 20)
+            return LESS_THAN_20[num] + " ";
+        else if(num < 100)
+            return TENS[num/10] + " " + solver(num % 10);
+        return LESS_THAN_20[num / 100] + " Hundred " + solver(num % 100);
+    }
+    
+    
+    string trimfnc(string str) {
+        const char* typeOfWhitespaces = " \t\n\r\f\v";
+        str.erase(str.find_last_not_of(typeOfWhitespaces) + 1);
+        str.erase(0, str.find_first_not_of(typeOfWhitespaces));
+        return str;
+    }
+};
