@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> dy = {1, 0, -1, 0}, dx = {0, 1, 0, -1};
+    vector<char> dir = {'R', 'D', 'L', 'U'};
+    int numDistinctIslands(vector<vector<int>>& grid) {
+        int ans = 0;
+        int n = grid.size();
+        int m = grid[0].size();
+        set<string> S;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j]) {
+                    string path = "";
+                    dfs(grid, i, j, n, m, path, S, ans);
+                    if(S.find(path) == S.end()) {
+                        S.insert(path);
+                        ans++;
+                    }
+                }      
+            }
+        }
+        return ans;
+    }
+    
+    void dfs(vector<vector<int>>& grid, int i, int j, int &n, int &m, string &path, set<string> &S, int &ans) {
+        grid[i][j] = 0;
+        for(int k = 0; k < 4; k++) {
+            int ni = i + dx[k];
+            int nj = j + dy[k];
+            if(ni < 0 || nj < 0 || ni >= n || nj >= m || !grid[ni][nj])
+                continue;
+            path = path + dir[k];
+            dfs(grid, ni, nj, n, m, path, S, ans);
+        }
+        // to make end of cell
+        // RRD can have 2 images
+        // *--    *--
+        //   |    |
+        // RRDXXXX  RRXXDXX
+        path = path + 'X';
+    }
+};
