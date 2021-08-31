@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        queue<TreeNode*> Q;
+        Q.push(root);
+        bool foundLast = false;
+        while(!Q.empty()) {
+            auto top = Q.front();
+            Q.pop();
+            if(!top)
+                foundLast = true;
+            else {
+                if(foundLast)
+                    return false;
+                Q.push(top->left);
+                Q.push(top->right);
+            }
+        }
+        return true;
+    }
+};
