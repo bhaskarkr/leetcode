@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minKnightMoves(int x, int y) {
+        x = abs(x);
+        y = abs(y);
+        vector<int> dx = {-1, 1, 2, 2, 1, -1, -2, -2};
+        vector<int> dy = {2, 2, 1, -1, -2, -2, -1, 1};
+        queue<pair<int, int>> Q;
+        vector<vector<bool>> S(310, vector<bool>(310));
+        Q.push(make_pair(0, 0));
+        int ans = 0;
+        while(!Q.empty()) {
+            int n = Q.size();
+            while(n--) {
+                auto top = Q.front();
+                Q.pop();
+                if(top.first == x && top.second == y)
+                    return ans;
+                for(int i = 0; i < 8; i++) {
+                    int nx = top.first + dx[i];
+                    int ny = top.second + dy[i];
+                    if(nx < 304 && ny < 304 && nx > -3 && ny > -3 && !S[nx+4][ny+4]) {
+                        S[nx+4][ny+4] = true;
+                        Q.push(make_pair(nx, ny));
+                    }
+                }
+            }
+            ans++;
+        }
+        return ans;
+    }
+};
