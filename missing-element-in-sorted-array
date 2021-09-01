@@ -1,14 +1,47 @@
+
 class Solution {
 public:
-    bool isMonotonic(vector<int>& nums) {
-        bool inc = true;
-        bool dec = true;
-        for(int i = 1; i < nums.size() && (inc || dec); i++) {
-            if(nums[i-1] > nums[i])
-                inc = false;
-            if(nums[i-1] < nums[i])
-                dec = false;
+    int missingElement(vector<int>& nums, int k) {
+        int l = 0, r = nums.size() - 1;
+        while(l <= r) {
+            int m = (l + r) / 2;
+            int missing = (nums[m] - nums[0] - 1) - (m - 1);
+            if(missing < k) {
+                // till "m" missing is less than k
+                // so l = m + 1
+                // we want l to point were missing >= k
+                // so that the kth missing element will lie b/w l-1 and l
+                l = m + 1;
+            } else
+                r = m - 1;
         }
-        return inc || dec;
+        // l - 1 -> because l points to next position were missing element will be found
+        // i.e missing element will be found between l - 1 and l
+        return nums[0] + k + (l - 1); 
     }
+    
+    // int missingElement(vector<int>& nums, int k) {
+    //     int l = 0, r = nums.size() - 1;
+    //     while(l < r - 1) {
+    //         int m = (l + r) / 2;
+    //         int missing = (nums[m] - nums[l] - 1) - (m - l - 1);
+    //         if(missing < k) {
+    //             k -= missing;
+    //             l = m;
+    //         } else
+    //             r = m;
+    //     }
+    //     return nums[l] + k; 
+    // }
+    
+    // int missingElement(vector<int>& nums, int k) {
+    //     int i = 1;
+    //     for(; i < nums.size(); i++) {
+    //         int diff = nums[i] - nums[i - 1] - 1;
+    //         if(k - diff <= 0)
+    //             break;
+    //         k-= diff;
+    //     }
+    //     return nums[i-1] + k; 
+    // }
 };
