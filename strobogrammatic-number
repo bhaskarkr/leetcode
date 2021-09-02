@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isStrobogrammatic(string num) {
+        unordered_map<char, char> map{
+                                      {'1', '1'},
+                                      {'6', '9'},
+                                      {'9', '6'},
+                                      {'0', '0'},
+                                      {'8', '8'}
+                                     };
+        for(int i = 0, j = num.length() - 1; i <= j; i++, j--) {
+            if(map.find(num[i]) == map.end() || map[num[i]] != num[j])
+                return false;
+        }
+        return true;
+    }
+};
