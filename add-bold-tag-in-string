@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string addBoldTag(string s, vector<string>& words) {
+        vector<pair<int, int>> boldRange;
+        for(string word : words) {
+            for(int i = 0; i < s.length(); i++) {
+                i = s.find(word, i);
+                if(i == string::npos)
+                    break;
+                boldRange.push_back(make_pair(i, i + word.length()));
+            }
+        }
+        sort(boldRange.begin(), boldRange.end());
+        vector<pair<int, int>> mergedRange;
+        for(int i = 0; i < boldRange.size(); i++) {
+            if(i == 0 || mergedRange.back().second < boldRange[i].first) {
+                mergedRange.push_back(boldRange[i]);
+            } else {
+                mergedRange.back().second = max(boldRange[i].second, mergedRange.back().second);
+            }
+        }
+        
+        for(auto itr = mergedRange.rbegin(); itr != mergedRange.rend(); itr++) {
+            s.insert(itr->second, "</b>");
+            s.insert(itr->first, "<b>");
+        }
+        return s;
+    }
+};
