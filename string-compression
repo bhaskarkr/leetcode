@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+        int i = 0, j = 0;
+        while(i < chars.size()) {
+            int c = 0;
+            char curr = chars[i];
+            while(i < chars.size() && chars[i] == curr) {
+                i++;
+                c++;
+            }
+            chars[j++] = curr;
+            if(c != 1) {
+                for(char nC : to_string(c))
+                    chars[j++] = nC;
+            }       
+        }
+        return j;
+    }
+    
+    // int compress(vector<char>& chars) {
+    //     char prev = '.';
+    //     int j = 0;
+    //     for(int i = 0, count = 0; i <= chars.size(); i++) {
+    //         if(i == chars.size() || (i > 0 && prev != chars[i])) {  
+    //             chars[j] = prev;
+    //             j++;
+    //             if(count > 1) {
+    //                 string num = to_string(count);
+    //                 for(int k = 0; k < num.size(); k++)
+    //                     chars[j++] = num[k]; 
+    //             }
+    //             count = 0;
+    //         }
+    //         prev = i < chars.size() ? chars[i] : '-';
+    //         count++;
+    //     }
+    //     return j;
+    // }
+};
