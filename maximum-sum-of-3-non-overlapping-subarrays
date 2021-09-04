@@ -1,0 +1,34 @@
+class Solution {
+public:
+    /*
+        [1,2,1,2,6,7,5,1]
+     [0, 1, 3, 4, 6, 12, 19, 24, 25]
+    */
+    vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
+        int subSetCount = 3, n = nums.size();
+        vector<int> preSum(n + 1);
+        for(int i = 0; i < n; i++)
+            preSum[i+1] = preSum[i] + nums[i];
+        
+        vector<vector<int>> DP(subSetCount + 1, vector<int>(n + 1)), INDEX(subSetCount + 1, vector<int>(n + 1));
+        
+        for(int i = 1; i <= subSetCount; i++) {
+            for(int j = i*k; j <= n; j++) {
+                int curr = DP[i - 1][j - k] + preSum[j] - preSum[j - k];
+                if(curr > DP[i][j-1]) {
+                    DP[i][j] = curr;
+                    INDEX[i][j] = j - k;
+                } else {
+                    DP[i][j] = DP[i][j-1];
+                    INDEX[i][j] = INDEX[i][j-1];
+                }
+            }
+        }
+        
+        vector<int> subArrayIndex(subSetCount);
+        subArrayIndex[subSetCount - 1] = INDEX[subSetCount][n];
+        for(int i = subSetCount - 2; i >= 0; i--)
+            subArrayIndex[i] = INDEX[i + 1][subArrayIndex[i + 1]];
+        return subArrayIndex;
+    }
+};
