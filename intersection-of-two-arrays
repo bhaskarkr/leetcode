@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        vector<bool> exist(1001);
+        for(int n : nums1)
+            exist[n] = true;
+        vector<int> ans;
+        for(int n : nums2)
+            if(exist[n]) {
+                ans.push_back(n);
+                exist[n] = false;
+            }       
+        return ans;
+    }
+};
