@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> di = {-1, 0, 1, 0}, dj = {0, 1, 0, -1};
+    void wallsAndGates(vector<vector<int>>& rooms) {
+        for(int i = 0; i < rooms.size(); i++) {
+            for(int j = 0; j < rooms[0].size(); j++) {
+                if(rooms[i][j] == 0)
+                    dfs(rooms, i, j, 0);
+            }
+        }
+    }
+    
+    void dfs(vector<vector<int>>& rooms, int i, int j, int dist) {
+        if(rooms[i][j] != 0 && rooms[i][j] <= dist)
+            return;
+        if(dist > 0 && rooms[i][j] == 0)
+            return;
+        rooms[i][j] = dist;
+        for(int d = 0; d < 4; d++) {
+            int ni = i + di[d];
+            int nj = j + dj[d];
+            if(ni < 0 || nj < 0 || ni >= rooms.size() || nj >= rooms[0].size() || rooms[ni][nj] == -1)
+                continue;
+            dfs(rooms, ni, nj, dist + 1);
+        }
+            
+    }
+};
