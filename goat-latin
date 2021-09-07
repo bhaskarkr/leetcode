@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string toGoatLatin(string sentence) {
+        stringstream ss(sentence);
+        string ans = "";
+        string temp = "";
+        int index = 1;
+        string vowel = "aeiou";
+        while(getline(ss, temp, ' ')) {
+            if(vowel.find(tolower(temp[0])) == string::npos) {
+                temp += temp[0];
+                temp = temp.substr(1);
+            }
+            temp+="ma";
+            int k = index;
+            while(k--)
+                temp += "a";
+            ans += temp + ' ';
+            index++;
+        }
+        if(ans.back() == ' ')
+            ans.pop_back();
+        return ans;
+    }
+};
