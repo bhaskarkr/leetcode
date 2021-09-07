@@ -1,0 +1,51 @@
+class Solution {
+public:
+    vector<int> di = {-1, 0, 1, 0}, dj = {0, -1, 0, 1};
+    int largestIsland(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size();
+        int color = 2;
+        int ans = 0;
+        unordered_map<int, int> colorArea;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 1) {
+                    colorArea[color] = dfs(i, j, color, grid, n, m);
+                    ans = max(ans, colorArea[color]);
+                    color++;
+                }
+            }
+        }
+        
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 0) {
+                    int tempArea = 0;
+                    unordered_map<int, bool> visited;
+                    for(int d = 0; d < 4; d++) {
+                        int ni = i + di[d];
+                        int nj = j + dj[d];
+                        if(ni < 0 || nj < 0 || ni >= n || nj >= m || visited[grid[ni][nj]])
+                            continue;
+                        tempArea += colorArea[grid[ni][nj]];
+                        visited[grid[ni][nj]] = true;
+                    }
+                    ans = max(tempArea + 1, ans);
+                }
+            }
+        }
+        return ans;
+    }
+    
+    int dfs(int i, int j, int color, vector<vector<int>>& grid, int n, int m) {
+        grid[i][j] = color;
+        int area = 0;
+        for(int d = 0; d < 4; d++) {
+            int ni = i + di[d];
+            int nj = j + dj[d];
+            if(ni < 0 || nj < 0 || ni >= n || nj >= m || grid[ni][nj] != 1)
+                continue;
+            area += dfs(ni, nj, color, grid, n, m);
+        }
+        return area + 1;
+    }
+};
