@@ -1,0 +1,53 @@
+class Solution {
+public:
+    
+    string multiply(string num1, string num2) {
+        int n = num1.length(), m = num2.length();
+        vector<int> prodArr(n + m);
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = m - 1; j >= 0; j--) {
+                int prod = (num1[i] - '0')*(num2[j] - '0') + prodArr[i+j+1];
+                prodArr[i+j] += prod/10;
+                prodArr[i+j+1] = prod%10;
+            }
+        }
+        
+        string ans = "";
+        for(int i = 0; i < n + m; i++) {
+            if(prodArr[i] == 0 && ans.length() == 0)
+                continue;
+            ans = ans + (char)(prodArr[i] + '0'); 
+        }
+        return ans.length() == 0 ? "0" : ans;
+    }
+    
+    
+    /*
+        string multiply(string num1, string num2) {
+       if(num1 == "0" || num2 == "0")
+           return "0";
+       reverse(num1.begin(), num1.end());
+       reverse(num2.begin(), num2.end());
+       string ans = "";
+       int prod = 0;
+       for(int i = 0; i < num1.size(); i++) {
+          for(int j = 0; j < num2.size(); j++) {
+              prod = (num1[i] - '0') * (num2[j]  - '0') + prod;
+              if(ans.length() <= i + j)
+                 ans = ans + (char)(prod%10 + '0');
+              else {
+                  prod = (ans[i+j] - '0') + prod;
+                  ans[i + j] = (char)(prod%10 + '0');
+              }
+              prod/=10;
+          } 
+          if(prod) {
+              ans = ans + (char)(prod%10 + '0');
+              prod /= 10;
+          }
+       }
+        reverse(ans.begin(), ans.end());
+       return ans;
+    }
+    */
+};
