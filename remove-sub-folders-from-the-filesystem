@@ -1,0 +1,46 @@
+class Node {
+    public:
+        int index;
+        unordered_map<char, Node*> child;
+        Node() {
+            index = -1;
+        }
+        Node(int ind) {
+            index = ind;
+        }
+};
+class Solution {
+public:
+    vector<string> removeSubfolders(vector<string>& folder) {
+        vector<string> ans;
+        Node* root = new Node();
+        int ind = 0;
+        for(string fold : folder) {
+            Node* temp = root;
+            for(char c : fold) {
+                if(!temp->child[c])
+                    temp->child[c] = new Node();
+                temp = temp->child[c];
+            }
+            temp->index = ind++;
+        }
+        queue<Node*> Q;
+        Q.push(root);
+        while(!Q.empty()) {
+            Node* front = Q.front();
+            Q.pop();
+            if(front->index > -1) {
+                ans.push_back(folder[front->index]);
+                for(auto [k, v] : front->child) {
+                    if(k != '/')
+                        Q.push(v);
+                }
+            }
+            else 
+                for(auto [k, v] : front->child) {
+                    Q.push(v);
+                }
+        }
+        return ans;
+    }
+};
