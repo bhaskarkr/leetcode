@@ -1,0 +1,32 @@
+class Solution {
+public:
+    /*
+        TC - O(N)
+        Steps:
+            1. We will find possible diagonals and find parallel points for them
+            2. Make bucket of x coordinate and push y co-ordinate to respective x-bucket
+            3. for each pair in points
+                 check if x1 != x2 and y1 != y2 && distance(p1, p2) < ans
+                    a if yes, then check if x1,y2 and x2,y1 exist in map
+                        i. if yes then update ans
+            4. if ans not updated then return 0 else ans
+    */
+    int minAreaRect(vector<vector<int>>& points) {
+        unordered_map<int, unordered_set<int>> seen;
+        for(auto point : points)
+            seen[point[0]].insert(point[1]);
+        
+        int ans = INT_MAX;
+        for(int i = 0; i < points.size(); i++) {
+            for(int j = i + 1; j < points.size(); j++) {
+                if(points[i][0] != points[j][0] && points[i][1] != points[j][1] 
+                   && abs((points[i][0] - points[j][0]) * (points[i][1] - points[j][1])) < ans) {
+                    if(seen[points[i][0]].find(points[j][1]) != seen[points[i][0]].end() 
+                       && seen[points[j][0]].find(points[i][1]) != seen[points[j][0]].end())
+                        ans = min(ans, abs((points[i][0] - points[j][0]) * (points[i][1] - points[j][1])));
+                }             
+            }
+        }
+        return ans == INT_MAX ? 0 : ans;
+    }
+};
