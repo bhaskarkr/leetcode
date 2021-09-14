@@ -1,7 +1,7 @@
 class Solution {
 public:
     /*
-        TC - O(N)
+        TC - O(N^2)
         Steps:
             1. We will find possible diagonals and find parallel points for them
             2. Make bucket of x coordinate and push y co-ordinate to respective x-bucket
