@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int ans = 0;
+        for(int point = 0; point < s.length(); point++) {
+            // odd length 3 2 1 2 3
+            ans += countPalindromeFromMid(s, point, point);
+            // even length 3 2 1 1 2 3
+            ans += countPalindromeFromMid(s, point, point + 1);
+        }
+        return ans;
+    }
+    
+    int countPalindromeFromMid(string s, int l, int r) {
+        int count = 0;
+        while(l >= 0 && r < s.length() && s[l] == s[r]) {
+            l--;
+            r++;
+            count++;
+        }
+        return count;
+    }
+};
