@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int ans = 0;
+        unordered_map<string, int> umap;
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                if(umap[getKey(i, j)] == 0) {
+                    ans = max(ans, dfs(matrix, i, j, matrix.size(), matrix[0].size(), umap));
+                }   
+            }
+        }
+        return ans;
+    }
+    
+    int dfs(vector<vector<int>>& matrix, int i, int j, int n, int m, unordered_map<string, int> &umap) {
+        if(umap[getKey(i, j)]) 
+            return umap[getKey(i, j)];
+        int temp = 0;
+        for(int d = 0; d < 4; d++) {
+            int ni = i + dx[d];
+            int nj = j + dy[d];
+            if(ni >= n || nj >= m || ni < 0 || nj < 0 || matrix[ni][nj] <= matrix[i][j])
+                continue;
+            temp = max(temp, dfs(matrix, ni, nj, n, m, umap));
+        }
+        umap[getKey(i, j)] = 1 + temp;
+        return 1 + temp;
+    }
+    
+    string getKey(int i, int j) {
+        return to_string(i) + "_" + to_string(j);
+    }
+};
