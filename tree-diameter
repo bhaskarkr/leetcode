@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int treeDiameter(vector<vector<int>>& edges) {
+        int ans = 0;
+        set<int> vis;
+        vector<vector<int>> adj(edges.size() + 1);
+        for(int i = 0; i < edges.size(); i++) {
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+        for(int i = 0; i < adj.size(); i++) {
+            ans = max(ans, dfs(adj, i, vis, ans));
+        }
+        return ans;
+    }
+    
+    int dfs(vector<vector<int>>& edges, int ind, set<int> &vis, int &ans) {
+        vis.insert(ind);
+        int maxVal = 0;
+        int secondMaxVal = 0;
+        for(int i = 0; i < edges[ind].size(); i++) {
+            if(vis.find(edges[ind][i]) != vis.end())
+                continue;
+            int temp = dfs(edges, edges[ind][i], vis, ans);
+            if(temp >= maxVal) {
+                secondMaxVal = maxVal;
+                maxVal = temp;
+            } else if(temp > secondMaxVal) {
+                secondMaxVal = temp;
+            }
+        }
+        ans = max(ans, maxVal + secondMaxVal);
+        return 1 + maxVal;
+    }
+};
