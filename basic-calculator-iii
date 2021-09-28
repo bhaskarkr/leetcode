@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int index = 0;
+        int l = s.length();
+        return solver(s, index, l);
+    }
+    
+    int solver(string s, int &index, int &n) {
+        vector<int> stk;
+        char op = '+';
+        for(;index < n; index++) {
+            if(op == ')')
+                break;
+            int temp = s[index] == '(' ? solver(s, ++index, n) : getNum(s, index, n);
+            switch(op) {
+                case '+': stk.push_back(temp);
+                          break;
+                case '-': stk.push_back(-temp);
+                          break;
+                case '*': stk.back() *= temp;
+                          break;
+                case '/': stk.back() /= temp;
+                          break;
+            }
+            if(index < n)
+                op = s[index];
+        }
+        int res = 0;
+        for(int num : stk)
+            res+=num;
+        return res;
+    }
+    
+    int getNum(string s, int &index, int &n) {
+        int num = 0;
+        while(index < n && isdigit(s[index]))
+            num = num * 10 + (s[index++] - '0');
+        return num;
+    }
+};
