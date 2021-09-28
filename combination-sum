@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> temp;
+        dfs(0, 0, target, temp, ans, candidates);
+        return ans;
+    }
+    
+    void dfs(int index, int sum, int target, vector<int> &val, vector<vector<int>> &ans, vector<int>& arr) {
+        if(sum == target) {
+            ans.push_back(val);
+            return;
+        }
+        
+        for(int i = index; i < arr.size(); i++) {
+            if(sum + arr[i] > target)
+                continue;
+            val.push_back(arr[i]);
+            dfs(i, sum + arr[i], target, val, ans, arr);
+            val.pop_back();
+        }
+    }
+};
