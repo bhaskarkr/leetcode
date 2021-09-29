@@ -1,0 +1,29 @@
+class Solution {
+public:
+    /*
+        TC - O(N^2)
+        SC - O(N)
+    */
+    bool splitArray(vector<int>& nums) {
+        int n = nums.size();
+        if(n < 7)
+            return false;
+        vector<int> presum(n);
+        presum[0] = nums[0];
+        for(int i = 1; i < n; i++)
+            presum[i] = presum[i - 1] + nums[i];
+        for(int j = 3; j < n - 3; j++) {
+            set<int> subsum;
+            for(int i = 1; i < j - 1; i++) {
+                if(presum[i-1] == presum[j - 1] - presum[i])
+                    subsum.insert(presum[i-1]);
+            }  
+            for(int k = j + 2; k < n - 1; k++) {
+                if(presum[n-1] - presum[k] == presum[k-1] - presum[j] && subsum.count(presum[n-1] - presum[k]))
+                    return true;
+            }
+        }
+        
+        return false;
+    }
+};
