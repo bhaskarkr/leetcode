@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        unordered_map<int, int> map;
+        map[0] = 1;
+        for(int num : nums) {
+            unordered_map<int, int> tempMap;
+            for(auto [key, val] : map) {
+                tempMap[key + num] += val;
+                tempMap[key - num] += val;
+            }
+            map = tempMap;   
+        }
+        return map[target];
+    }
+};
