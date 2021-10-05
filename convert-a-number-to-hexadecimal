@@ -1,0 +1,15 @@
+class Solution {
+public:
+    string toHex(int num) {
+        string ans = "";
+        int count = 8; // 32 bit binary -> 8 bit hex
+        // -1 >> any times -> -1
+        // so to avoid infinite loop
+        string hex = "0123456789abcdef";
+        while(num != 0 && count-- > 0) {
+            ans =  hex[num & 0b1111] + ans;
+            num >>= 4 ;
+        }
+        return ans.length() == 0 ? "0" : ans;
+    }
+};
