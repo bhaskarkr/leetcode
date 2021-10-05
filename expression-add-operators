@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<string> addOperators(string num, int target) {
+        vector<string> ans;
+        generator(num, ans, "", 0, target, 0, 0);
+        return ans;
+    }
+    
+    void generator(string num, 
+                   vector<string> &ans, 
+                   string exp, 
+                   int ind, 
+                   int target, 
+                   long currVal, 
+                   long prev) {
+        
+       if(ind == num.length()) {
+           if(target == currVal) {
+                ans.push_back(exp);
+           } 
+           return;
+       }
+        
+        for(int i = ind; i < num.length(); i++) {
+            if(i != ind && num[ind] == '0')
+                break;
+            string currNumStr = num.substr(ind, i + 1 - ind);
+            long currNum = stol(currNumStr);
+            if(ind == 0) {
+                generator(num, ans, currNumStr, i + 1, target, currNum, currNum);
+            } else {
+                generator(num, ans, exp + "+" + currNumStr, i + 1, target, currVal + currNum, currNum);
+                generator(num, ans, exp + "-" + currNumStr, i + 1, target, currVal - currNum, -currNum);
+                generator(num, ans, exp + "*" + currNumStr, i + 1, target, currVal - prev + prev*currNum, prev*currNum);
+            }
+        }
+    }
+};
