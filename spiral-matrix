@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int xMin = 0, xMax = matrix.size() - 1;
+        int yMin = 0, yMax = matrix[0].size() - 1;
+        vector<int> ans;
+        while(xMin <= xMax && yMin <= yMax) {
+            for(int j = yMin; j <= yMax; j++) {
+                ans.push_back(matrix[xMin][j]);
+            }
+            xMin++;
+            for(int j = xMin; j <= xMax; j++) {
+                ans.push_back(matrix[j][yMax]);
+            }
+            yMax--;
+            
+            for(int j = yMax; j >= yMin && xMin <= xMax; j--) {
+                ans.push_back(matrix[xMax][j]);
+            }
+            xMax--;
+            for(int j = xMax; j >= xMin && yMin <= yMax; j--) {
+                ans.push_back(matrix[j][yMin]);
+            }
+            yMin++;
+        }
+        return ans;
+    }
+};
