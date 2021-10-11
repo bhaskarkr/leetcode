@@ -1,0 +1,38 @@
+typedef vector< pair<int, int> > VPII;
+class Solution {
+public:
+    
+    string getCenter(vector<int> p1, vector<int> p2) {
+        return to_string(p1[0] + p2[0]) + "_" + to_string(p1[1]+ p2[1]);
+    }
+                                                    
+    long getLength(vector<int> p1, vector<int> p2) {
+        return (p1[0] - p2[0])*(p1[0] - p2[0]) + (p1[1] - p2[1])*(p1[1] - p2[1]);
+    }
+    
+    double minAreaFreeRect(vector<vector<int>>& points) {
+        //map[center][DiagonalLength]
+        double ans = DBL_MAX;
+        unordered_map<string, unordered_map<int,  VPII> > map;
+        for(int i = 0; i + 1 < points.size(); i++) {
+            for(int j = i + 1; j < points.size(); j++) {
+                string center = getCenter(points[i], points[j]);
+                int len = getLength(points[i], points[j]);
+                map[center][len].push_back(make_pair(i, j));
+            }
+        }
+        
+        for(auto [center, diaLengths] : map) {
+            for(auto [len, diaPoint] : diaLengths) {
+                for(int i = 0; i + 1 < diaPoint.size(); i++) {
+                    for(int j = i + 1; j < diaPoint.size(); j++) {
+                        long area = getLength(points[diaPoint[i].first], points[diaPoint[j].first]) * getLength(points[diaPoint[i].first], points[diaPoint[j].second]) ;
+                        if(ans > area)
+                            ans = area;
+                    }
+                }
+            }
+        }
+        return ans == DBL_MAX ? 0 : sqrt(ans);
+    }
+};
