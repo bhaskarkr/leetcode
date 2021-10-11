@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        vector<double> ans;
+        unordered_map<string, unordered_map<string, double>> map;
+        set<string> visited;
+        
+        for(int i = 0; i < equations.size(); i++) {
+            map[equations[i][0]][equations[i][0]] = 1;
+            map[equations[i][1]][equations[i][1]] = 1;
+            map[equations[i][0]][equations[i][1]] = values[i];
+            map[equations[i][1]][equations[i][0]] = 1.0/values[i];
+        }
+        
+        for(auto q : queries) {
+            visited.insert(q[0]);
+            ans.push_back(getPathValue(q[0], q[1], visited, map));
+            visited.erase(q[0]);
+        }
+        return ans;
+    }
+    
+    double getPathValue(string start, string end, set<string> &visited, unordered_map<string, unordered_map<string, double>> &map) {
+        if(map.find(start) == map.end())
+            return -1;
+        if(map[start].find(end) != map[start].end())
+            return map[start][end];
+        for(auto [key, val] : map[start]) {
+            if(visited.find(key) == visited.end()) {
+                visited.insert(key);
+                double prod = getPathValue(key, end, visited, map);
+                visited.erase(key);            
+                if(prod != -1) {  
+                    return val * prod;
+                }
+                    
+            }
+        }
+        return -1;
+    }
+};
