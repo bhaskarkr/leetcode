@@ -1,0 +1,39 @@
+class Solution {
+public:
+    const vector<vector<int>> dir = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        int n = board.size(), m = board[0].size(), x = click[0], y = click[1];
+        if(board[x][y] == 'M')
+            board[x][y] = 'X';
+        else {
+            queue<pair<int, int>> Q;
+            Q.push({x, y});
+            while(!Q.empty()) {
+                auto top = Q.front();
+                Q.pop();
+                int count = 0;
+                for(auto d : dir) {
+                    int r = top.first + d[0], c = top.second + d[1];
+                    if(r>=0 && r < n && c >=0 && c < m && board[r][c] == 'M')
+                        count++;
+                }
+                if(count) {
+                    board[top.first][top.second] = ('0'+count);
+                } else {
+                    board[top.first][top.second] = 'B';
+                    for(auto d : dir) {
+                        int r = top.first + d[0], c = top.second + d[1];
+                        if(r>=0 && r < n && c >=0 && c < m && board[r][c] == 'E') {
+                            Q.push({r, c});
+                            board[r][c] = 'B';
+                        }  
+                    }
+                }
+            }
+           
+        }
+        
+        return board;
+    }
+};
