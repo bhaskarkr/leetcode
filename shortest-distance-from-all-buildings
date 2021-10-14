@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int shortestDistance(vector<vector<int>>& grid) {
+        int ans = -1;
+        int n = grid.size(), m = grid[0].size();
+        int step = 0;
+        vector<vector<int>> totalDist(n, vector<int>(m));
+        vector<vector<int>> dir = {{0,1}, {1, 0}, {-1, 0}, {0, -1}};
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 1) {
+                    ans = -1;
+                    auto currDist = grid;
+                    queue<pair<int, int>> Q;
+                    Q.push({i, j});
+                    while(!Q.empty()) {
+                        auto curr = Q.front();
+                        Q.pop();
+                        for(int d = 0; d < 4; d++) {
+                            int ni = curr.first + dir[d][0];
+                            int nj = curr.second + dir[d][1];
+                            if(ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == step) {
+                                grid[ni][nj]--;
+                                Q.push({ni, nj});
+                                currDist[ni][nj] = currDist[curr.first][curr.second] + 1;  
+                                totalDist[ni][nj] += currDist[ni][nj] - 1; 
+                                if(ans == -1 || ans > totalDist[ni][nj])
+                                    ans = totalDist[ni][nj];
+                            }
+                        }
+                    }
+                    step--;
+                }
+            }
+        }
+
+        return ans;
+    }
+};
