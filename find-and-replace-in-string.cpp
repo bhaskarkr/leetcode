@@ -9,8 +9,8 @@ public:
         for(int j = 0; j < indices.size(); j++) {
             int i = sortedIndices[j].second;
             int k = sources[i].length();
-            size_t filtered = s.substr(indices[i], k).find(sources[i]) ;
-            if(filtered != string::npos) {
+            size_t searchIndex = s.substr(indices[i], k).find(sources[i]) ;
+            if(searchIndex != string::npos) {
                 s = s.substr(0, indices[i]) + targets[i] + s.substr(indices[i] + k); 
             }
         }
