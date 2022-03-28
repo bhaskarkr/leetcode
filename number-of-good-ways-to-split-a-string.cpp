@@ -12,7 +12,7 @@ public:
             uniqueChar[c]--;
             if(uniqueChar[c] == 0)
                 uniqueChar.erase(c);
-            if(uniqueChar.size() > 0 && tempChar.size() == uniqueChar.size())
+            if(tempChar.size() == uniqueChar.size())
                 ans++;
         }
         return ans;
