@@ -26,7 +26,7 @@ public:
     string serializer(unordered_map<string, vector<TreeNode*>> &umap, TreeNode* root) {
         if(!root)
             return "";
-        string serializedSubtree = "("+serializer(umap, root->left)+" "+to_string(root->val)+" "+ serializer(umap, root->right)+")";
+        string serializedSubtree = "("+(root->left ? serializer(umap, root->left) : "L")+to_string(root->val)+(root->right ? serializer(umap, root->right) : "R")+")";
         umap[serializedSubtree].push_back(root);
         return serializedSubtree;
     }
