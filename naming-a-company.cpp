@@ -31,28 +31,21 @@ public:
 // class Solution {
 // public:
 //     long long distinctNames(vector<string>& ideas) {
-//         unordered_map<char, set<string>> mapped;
+//         unordered_map<string, set<string>> mapped;
 //         for(string s : ideas) {
-//             mapped[s[0]].insert(s.substr(1));
+//             mapped[s.substr(1)].insert(s);
 //         }
 //         long long ans = 0;
-//         char c1 = 'a';
-//         char c2 = 'a';
-//         while(c1 <= 'z') {
-//             while(c2 <= 'z') {
-//                 int l1 = 0, l2 = 0;
+//         for(int i = 0; i < ideas.size() - 1; i++) {
+//             for(int j = i + 1; j < ideas.size(); j++) {
+//                 swap(ideas[i][0], ideas[j][0]);
 //                 bool f = mapped[ideas[i].substr(1)].find(ideas[i]) == mapped[ideas[i].substr(1)].end();
 //                 bool s = mapped[ideas[j].substr(1)].find(ideas[j]) == mapped[ideas[j].substr(1)].end();
+//                 if(f && s) {
+//                     ans+=2;
+//                 }
+//                 swap(ideas[i][0], ideas[j][0]);
 //             }
-//         }
-//         for(int i = 0; i < ideas.size() - 1; i++) {
-//             swap(ideas[i][0], ideas[j][0]);
-//             bool f = mapped[ideas[i].substr(1)].find(ideas[i]) == mapped[ideas[i].substr(1)].end();
-//             bool s = mapped[ideas[j].substr(1)].find(ideas[j]) == mapped[ideas[j].substr(1)].end();
-//             if(f && s) {
-//                 ans+=2;
-//             }
-//             swap(ideas[i][0], ideas[j][0]);
 //         }
 //         return ans;
 //     }
