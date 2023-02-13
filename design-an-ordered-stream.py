@@ -2,7 +2,7 @@ class OrderedStream:
 
     def __init__(self, n: int):
         self.count = 1
-        self.data = [-1]*1002
+        self.data = [-1]*(n+2)
 
     def insert(self, idKey: int, value: str) -> List[str]:
         self.data[idKey] = value
