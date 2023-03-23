@@ -3,6 +3,7 @@ public:
     int getParent(vector<int> &parent, int node) {
         while(parent[node] != node) {
             node = parent[node];
+            parent[node] = parent[node];
         }
         return node;
     }
