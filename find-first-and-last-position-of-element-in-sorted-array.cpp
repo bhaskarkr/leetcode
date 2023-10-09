@@ -1,0 +1,14 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        auto l = upper_bound(nums.begin(), nums.end(), target - 1);
+        auto r = upper_bound(nums.begin(), nums.end(), target);
+        if(r != nums.begin())
+            r = prev(r);
+        if(nums.size() < 1 || l == nums.end() || r == nums.end() || *l != target || *r != target)
+            return {-1, -1};
+        int a = l - nums.begin();
+        int b = r - nums.begin();
+        return {a, b};
+    }
+};
