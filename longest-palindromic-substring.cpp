@@ -23,3 +23,34 @@ public:
         }
     }
 };
+
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int index = 0, len = 1;
+        for(int i = 0; i < s.length(); i++) {
+            auto odd = isPalindrome(i, i, s);
+            auto even = isPalindrome(i, i + 1, s);
+            if(odd.second > len) {
+                index = odd.first;
+                len = odd.second;
+            }
+            if(even.second > len) {
+                index = even.first;
+                len = even.second;
+            }
+        }
+        return s.substr(index, len);
+    }
+
+    pair<int, int> isPalindrome(int i, int j, string &s) {
+        while(i >= 0 && j < s.length()) {
+            if(s[i] != s[j])
+                break;
+            i--;
+            j++;
+        }
+        return {i + 1, j - i - 1};
+    }   
+};
