@@ -1,5 +1,12 @@
 class Solution {
 public:
+
+    /*
+        CASE 1 : 2 parents for a node, candidate1 and candidate2 will be set
+                 and one of them will removed (candidate2).
+        CASE 2: cycle exist, then we can just return the node which caused the cycle. candidate1 and candidate2 will be empty.
+        CASE 3 : both cycle and 2 parent exist, then we will first eleminate candidate2 and then check if cycle still exists then we will just return the candidate1 otherwise candidate2.
+    */
     int getParent(int x, vector<int> &parents) {
         if(x == parents[x])
             return x;
