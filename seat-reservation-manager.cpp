@@ -1,21 +1,18 @@
 class SeatManager {
 public:
     int k;
-    set<int> r, u;
+    set<int> u;
     SeatManager(int n) {
         k = 1;
     }
-    
     int reserve() {
         if(u.empty()) {
-            r.insert(k++);
+            k++;
             return k - 1;
         } 
         int m = *(u.begin());
-        r.insert(*(u.begin()));
         u.erase(u.begin());
         return m;
-
     }
     
     void unreserve(int seatNumber) {
