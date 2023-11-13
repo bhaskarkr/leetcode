@@ -1,5 +1,19 @@
 class Solution {
 public:
+    /*
+              Case 1                  Case 2                  Case 2
+                b                       b                       b
+       +----------------+      +----------------+      +----------------+
+       |                |      |                |      |                |
+       |                |      |                |      |                |
+     c |                | a  c |                | a  c |                | a
+       |                |      |                |      |                |    f
+       +--------------->|      |                |      |                | <----+
+                d       |      |                ^ e    |                |      | e
+                               |                |      |                       |
+                               +----------------+      +-----------------------+
+                                        d                       d
+    */
     bool isSelfCrossing(vector<int>& distance) {
         for(int i = 3; i < distance.size(); i++) {
             if(distance[i] >= distance[i-2] 
