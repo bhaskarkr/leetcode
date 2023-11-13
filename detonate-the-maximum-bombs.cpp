@@ -17,13 +17,11 @@ public:
         
         queue<int> q;
         for(int i = 0; i < bombs.size(); i++) {
-            int temp = 0;
-            vector<bool> visited(bombs.size());
+            bitset<100> visited;
             q.push(i);
             visited[i] = true;
             while(!q.empty()) {
                 int ci = q.front();
-                temp++;
                 q.pop();
                 for(int j : distance[ci]) {
                     if(!visited[j]) {
@@ -32,7 +30,7 @@ public:
                     }
                 }
             }
-            ans = max(ans, temp);
+            ans = max(ans, (int) visited.count());
         } 
         return ans;
     }
