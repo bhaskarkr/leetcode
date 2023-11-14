@@ -32,3 +32,39 @@ public:
         return deleted ? NULL : root;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> ans;
+    unordered_set<int> s;
+    TreeNode* helper(TreeNode* root, bool parentDelete) {
+        if(!root)
+            return root;
+        if(s.find(root->val) != s.end()) 
+            parentDelete = true;
+        else {
+            if(parentDelete)
+                ans.push_back(root);
+            parentDelete = false;
+        }
+        root->left = helper(root->left, parentDelete);
+        root->right = helper(root->right, parentDelete);
+        return parentDelete ? NULL : root;
+    }
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        s.insert(to_delete.begin(), to_delete.end());
+        helper(root, true);
+        return ans;
+    }
+};
