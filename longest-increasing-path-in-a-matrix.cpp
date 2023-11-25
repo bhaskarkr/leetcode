@@ -25,3 +25,33 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    vector<vector<int>> visited;
+    vector<int> dx = {-1, 0, 1, 0}, dy = {0, -1, 0, 1};
+    int helper(vector<vector<int>>& matrix, int x, int y, int m, int n) {
+        int curr = 0;
+        if(visited[x][y] != -1)
+            return visited[x][y];
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(nx  < 0 || ny < 0 || nx >= m || ny >= n || matrix[nx][ny] <= matrix[x][y])
+                continue;
+            curr = max(curr, helper(matrix, nx, ny, m, n));
+        }
+        return visited[x][y] = curr + 1;
+    }
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size(), ans = 0;
+        visited.resize(m, vector<int> (n, -1));
+        vector<vector<int>> count(m, vector<int> (n, 1));
+        for(int i = 0; i < m; i++)
+            for(int j = 0; j < n; j++)
+                if(visited[i][j] == -1)
+                    ans = max(ans, helper(matrix, i, j, m, n));
+        return ans;
+    }
+};
