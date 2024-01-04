@@ -1,6 +1,21 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
+        unordered_map<char, int> chars;
+        int ans = 0, j = 0;
+        for(int i = 0; i < s.length(); i++) {
+            while(chars.find(s[i]) != chars.end())
+                chars.erase(s[j++]);
+            chars[s[i]] = i;
+            ans = max(ans, (int) chars.size());
+        }
+        return max(ans, (int) chars.size());
+    }
+};
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
         unordered_map<char, int> charMap;
         for(char c : s)
             charMap[c] = -1; 
