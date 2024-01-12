@@ -12,3 +12,21 @@ public:
         return f == b;
     }
 };
+
+
+class Solution {
+public:
+    bool halvesAreAlike(string s) {
+        string vowel = "aeiouAEIOU";
+        int c = 0;
+        for(int i = 0; i < s.length() / 2; i++) {
+            if(vowel.find(s[i]) != string::npos)
+                c++;
+        }
+        for(int i = s.length() / 2; i < s.length(); i++) {
+            if(vowel.find(s[i]) != string::npos)
+                c--;
+        }
+        return c == 0;
+    }
+};
