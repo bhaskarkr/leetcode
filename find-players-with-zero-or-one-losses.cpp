@@ -1,6 +1,26 @@
 class Solution {
 public:
     vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        map<int, int> loss;
+        vector<vector<int>> ans(2);
+        for(auto &match : matches) {
+            loss[match[0]] += 0;
+            loss[match[1]]++;
+        }
+        for(auto &[k, v] : loss) {
+            if(v == 1)
+                ans[1].push_back(k);
+            else if(v == 0)
+                ans[0].push_back(k);
+        }
+        return ans;
+    }
+};
+
+
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
         unordered_map<int, int> loser;
         set<int> all;
         for(auto match : matches) {
