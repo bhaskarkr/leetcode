@@ -35,3 +35,37 @@ public:
         return true;
     }
 };
+
+
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        auto cmp = [](const pair<int, int> &a, const pair<int, int> &b) {
+            if(a.first == b.first)
+                return a.second > b.second; 
+            return a.first > b.first;
+        };
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
+        for(int num : nums) {
+            while(!pq.empty() && pq.top().first + 1 < num) {
+                if(pq.top().second < 3)
+                    return false;
+                pq.pop();
+            }
+            if(pq.empty() || pq.top().first == num) {
+                pq.push({num, 1});
+            } else {
+                auto tp = pq.top();
+                pq.pop();
+                pq.push({num, tp.second + 1});
+            }
+        }
+        while(!pq.empty()) {
+            auto tp = pq.top();
+            pq.pop();
+            if(tp.second < 3)
+                return false;
+        }
+        return true;
+    }
+};
