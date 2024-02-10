@@ -2,6 +2,26 @@ class Solution {
 public:
     int countSubstrings(string s) {
         int ans = 0;
+        for(int i = 0; i < s.length(); i++)
+            ans += isPalindrome(s, i, i + 1) + isPalindrome(s, i, i);
+        return ans;
+    }
+
+    int isPalindrome(string &s, int l, int r) {
+        while(l >= 0 && r < s.length()) {
+            if(s[l] != s[r])
+                break;
+            l--;
+            r++;
+        }
+        return (r - l) / 2;
+    }
+};
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int ans = 0;
         for(int point = 0; point < s.length(); point++) {
             // odd length 3 2 1 2 3
             ans += countPalindromeFromMid(s, point, point);
