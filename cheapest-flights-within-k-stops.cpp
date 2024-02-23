@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<int> dist(n, 1e9);
+        dist[src] = 0;
+        for(int i = 0; i <= k; i++) {
+            vector<int> temp(dist.begin(), dist.end());
+            for(auto &f: flights)
+                temp[f[1]] = min(temp[f[1]], dist[f[0]] + f[2]);
+            dist = temp;
+        }
+        return dist[dst] == 1e9 ? -1 : dist[dst];
+    }
+};
