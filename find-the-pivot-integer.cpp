@@ -1,3 +1,17 @@
+class Solution {
+public:
+    int pivotInteger(int n) {
+        int sum = (n * (n + 1)) / 2, temp = 0;
+        for(int x = 1; x <=n; x++) {
+            if(temp + x == sum - temp)
+                return x;
+            temp += x;
+        }
+        return -1;
+    }
+};
+
+
 class Solution:
     def pivotInteger(self, n: int) -> int:
         l = 1
