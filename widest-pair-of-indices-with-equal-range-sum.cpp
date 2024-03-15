@@ -1,6 +1,25 @@
 class Solution {
 public:
     int widestPairOfIndices(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size(), ans = 0;
+        unordered_map<int, int> diff;
+        partial_sum(nums1.begin(), nums1.end(), nums1.begin());
+        partial_sum(nums2.begin(), nums2.end(), nums2.begin());
+        diff[0] = -1;
+        for(int i = 0; i < n; i++) {
+            if(diff.find(nums1[i] - nums2[i]) == diff.end())
+                diff[nums1[i] - nums2[i]] = i;
+            else
+                ans = max(ans, i - diff[nums1[i] - nums2[i]]);
+        }
+        return ans;
+    }
+};
+
+
+class Solution {
+public:
+    int widestPairOfIndices(vector<int>& nums1, vector<int>& nums2) {
         int n = nums1.size(), ans = 0, eq = 0;
         vector<int> p1(n), p2(n);
         unordered_map<int, int> diff;
