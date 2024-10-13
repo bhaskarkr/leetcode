@@ -30,3 +30,27 @@ public:
         return i == word.length() && j == abbr.length();
     }
 };
+
+class Solution {
+public:
+    bool validWordAbbreviation(string word, string abbr) {
+        int num = 0;
+        int i = 0, j = 0;
+        while(i < word.length() && j < abbr.length()) {
+            if(word[i] == abbr[j]) {
+                j++;
+                i++;
+            } else if(isdigit(abbr[j]) && abbr[j] != '0') {
+                while(j < abbr.length() && isdigit(abbr[j])) {
+                    num = num * 10 + (abbr[j] - '0');
+                    j++;
+                }
+                i += num;
+                num = 0;
+            } else {
+                return false;
+            }
+        }
+        return i == word.length() && j == abbr.length();
+    }
+};
