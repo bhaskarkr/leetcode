@@ -42,3 +42,29 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        stack<int> stk;
+        string ans = "";
+        for(int i = 0; i < s.length(); i++) {
+            char c = s[i];
+            if(c == '(') {
+                stk.push(ans.length());
+            } else if(c == ')') {
+                if(!stk.empty())
+                    stk.pop();
+                else
+                    continue;  
+            }
+            ans += c;
+        }
+        while(!stk.empty()) {
+            ans = ans.substr(0, stk.top()) + ans.substr(stk.top() + 1);
+            stk.pop();
+        }
+        return ans;
+    }
+};
