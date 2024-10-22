@@ -34,3 +34,38 @@ public:
         return -1;
     }
 };
+
+
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        queue<vector<int>> q;
+        int m = grid.size(), n = grid[0].size();
+        int ans = 1;
+        if(grid[0][0])
+            return -1;
+        q.push({0, 0});
+        while(!q.empty()) {
+            int c = q.size();
+            while(c--) {
+                auto curr = q.front();
+                q.pop();
+                if(curr[0] == m - 1 and curr[1] == n - 1)
+                    return ans;
+                for(int i = -1; i < 2; i++) {
+                    for(int j = -1; j < 2; j++) {
+                        if(i == 0 and j == 0)
+                            continue;
+                        int nx = curr[0] + i, ny = curr[1] + j;
+                        if(nx < 0 || ny < 0 || nx >= m or ny >= n or grid[nx][ny])
+                            continue;
+                        grid[nx][ny] = 1;
+                        q.push({nx, ny});
+                    }
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};
