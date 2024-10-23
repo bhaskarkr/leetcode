@@ -39,3 +39,40 @@ public:
         return left || right || curr;
     }
 };
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<TreeNode*, TreeNode*> parent;
+    void populate_parent(TreeNode* root) {
+        if(!root)
+            return;
+        if(root->left) {
+            parent[root->left] = root;
+            populate_parent(root->left);
+        }
+        if(root->right) {
+            parent[root->right] = root;
+            populate_parent(root->right);
+        }
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        parent[root] = NULL;
+        populate_parent(root);
+        auto a = p, b = q;
+        while(a != b) {
+            a = parent[a] ? parent[a] : q;
+            b = parent[b] ? parent[b] : p;
+        }
+        return a;
+    }
+};
