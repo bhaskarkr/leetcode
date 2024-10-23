@@ -32,3 +32,30 @@ public:
         return ans.empty() ? "/" : ans;
     }
 };
+
+
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stack<string> stk;
+        string ans = "";
+        string temp = "";
+        stringstream ss(path);
+        while(getline(ss, temp, '/')) {
+            if(!temp.length() or temp == ".") {
+                continue;
+            } else if(temp == "..") {
+                if(!stk.empty())
+                    stk.pop();
+            } else {
+                stk.push(temp);
+            }
+        }
+        while(!stk.empty()) {
+            ans = "/" + stk.top() + ans;
+            stk.pop();
+        }
+        return ans.length() == 0 ? "/" : ans;
+    }
+};
