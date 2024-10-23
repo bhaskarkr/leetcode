@@ -10,3 +10,17 @@ public:
         return n < 0 ? (1 / x) * prod : x * prod; 
     }
 };
+
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n == 0)
+            return 1;;
+        double v = myPow(x, n / 2);
+        double p = v * v;
+        if(n % 2)
+            p *= (n >= 0) ? x : 1.0 / x;
+        return p;
+    }
+};
