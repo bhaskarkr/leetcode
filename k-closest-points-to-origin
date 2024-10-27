@@ -43,3 +43,40 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+
+    int quick_select(vector<vector<int>>& points, int l, int r) {
+        auto pivot = points[l];
+        long temp = points[l][0]*points[l][0] + points[l][1]*points[l][1];
+        while(l < r) {
+            while(l < r and points[r][0]*points[r][0] + points[r][1]*points[r][1] >= temp) {
+                r--;
+            }
+            points[l] = points[r];
+            while(l < r and points[l][0]*points[l][0] + points[l][1]*points[l][1] <= temp) {
+                l++;
+            }
+            points[r] = points[l];
+        }
+        points[l] = pivot;
+        return l;
+    }
+    
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        int l = 0, r = points.size() - 1;
+        while(l < r) {
+            int m = quick_select(points, l, r);
+            if(m == k)
+                break;
+            else if(m > k)
+                r = m - 1;
+            else
+                l = m + 1;
+        }
+        vector<vector<int>> ans(points.begin(), points.begin() + k);
+        return ans;
+    }
+};
