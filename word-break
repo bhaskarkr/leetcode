@@ -54,3 +54,23 @@ public:
 
 
 */
+
+class Solution {
+public:
+    unordered_map<int, bool> umap;
+    bool helper(string s, vector<string>& wordDict, int index) {
+        if(index >= s.length())
+            return true;
+        if(umap.find(index) != umap.end())
+            return umap[index];
+        for(string &t : wordDict) {
+            if(s.substr(index, t.length()) == t && helper(s, wordDict, index + t.length())) {
+                return umap[index] = true;
+            }
+        }
+        return umap[index] = false;
+    }    
+    bool wordBreak(string s, vector<string>& wordDict) {
+        return helper(s, wordDict, 0);
+    }
+};
