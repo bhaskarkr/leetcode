@@ -106,3 +106,64 @@ public:
     }
 };
 */
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<TreeNode*, TreeNode*> umap;
+    void populate(TreeNode* root) {
+        if(!root)
+            return;
+        if(root->left)
+            umap[root->left] = root;
+        if(root->right)
+            umap[root->right] = root;
+        populate(root->left);
+        populate(root->right);
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        populate(root);
+        queue<TreeNode*> Q;
+        Q.push(target);
+        set<TreeNode*> visited;
+        visited.insert(target);
+        while(!Q.empty() && k > 0) {
+            k--;
+            int c = Q.size();
+            while(c--) {
+                auto curr = Q.front();
+                Q.pop();
+                if(curr->left and visited.find(curr->left) == visited.end()) {
+                    visited.insert(curr->left);
+                    Q.push(curr->left); 
+                }
+                    
+                if(curr->right and visited.find(curr->right) == visited.end()) {
+                    visited.insert(curr->right);
+                    Q.push(curr->right);    
+                }
+                    
+                if(umap.find(curr) != umap.end() and visited.find(umap[curr]) == visited.end()) {
+                    visited.insert(umap[curr]);
+                    Q.push(umap[curr]);   
+                }
+            }
+        }
+        vector<int> ans;
+        while(!Q.empty()) {
+            ans.push_back(Q.front()->val);
+            Q.pop();
+        }
+        return ans;
+    }
+};
