@@ -23,3 +23,25 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    string toGoatLatin(string sentence) {
+        stringstream ss(sentence);
+        string ans, temp, vowels = "aeiouAEIOU";
+        int c = 1;
+        while(getline(ss, temp, ' ')) {
+            if(vowels.find(temp[0]) != string::npos) {
+                temp += "ma" + string(c, 'a');
+            } else {
+                temp = temp.substr(1) + temp[0];
+                temp += "ma" + string(c, 'a');
+            }
+            ans += temp + " ";
+            c++;
+        }
+        ans.pop_back();
+        return ans;
+    }
+};
