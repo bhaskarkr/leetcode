@@ -18,3 +18,19 @@ public:
         return DP[days.back()%30];
     }
 };
+
+
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        unordered_set<int> us(days.begin(), days.end());
+        vector<int> DP(366, 0);
+        for(int i = days.front(); i <= days.back(); i++) {
+            if(us.find(i) == us.end())
+                DP[i] = DP[i-1];
+            else 
+                DP[i] = min(DP[i-1] + costs[0], min(DP[max(i-7, 0)] + costs[1], DP[max(i-30, 0)] + costs[2]));
+        }
+        return DP[days.back()];
+    }
+};
