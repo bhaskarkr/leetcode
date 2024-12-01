@@ -27,3 +27,32 @@ public:
         return s;
     }
 };
+
+class Solution {
+public:
+    string addBoldTag(string &s, vector<string>& words) {
+        vector<pair<int, int>> boldIntervalList;
+        for(auto &word : words) {
+            for(int i = 0; i < s.length(); i++) {
+                auto index = s.find(word, i);
+                if(index != string::npos)
+                    boldIntervalList.push_back({index, index + word.length()});
+            }
+        }
+        sort(boldIntervalList.begin(), boldIntervalList.end());
+        vector<pair<int, int>> mergedIntervalList;
+        for(int i = 0; i < boldIntervalList.size(); i++) {
+            if(mergedIntervalList.empty() || mergedIntervalList.back().second < boldIntervalList[i].first) {
+                mergedIntervalList.push_back(boldIntervalList[i]);
+            } else {
+                mergedIntervalList.back().second = max(mergedIntervalList.back().second, boldIntervalList[i].second);
+            }
+        }
+
+        for(int i = mergedIntervalList.size() - 1; i >= 0; i--) {
+            s.insert(mergedIntervalList[i].second, "</b>");
+            s.insert(mergedIntervalList[i].first, "<b>");
+        }
+        return s;
+    }
+};
