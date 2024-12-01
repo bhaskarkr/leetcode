@@ -51,3 +51,29 @@ public:
     }
     */
 };
+
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        reverse(num1.begin(), num1.end());
+        reverse(num2.begin(), num2.end());
+        string ans = string(num1.size() + num2.size(), '0');
+        int carry = 0;
+        for(int i = 0; i < num2.size(); i++) {
+            carry = 0;
+            for(int j = 0; j < num1.size(); j++) {
+                carry += (num2[i] - '0') * (num1[j] - '0') + (ans[i + j] - '0');
+                ans[i + j] = carry % 10 + '0';
+                carry /= 10;
+            }
+            if(carry) {
+                ans[i+num1.size()] = (carry % 10) + '0';
+                carry /= 10;
+            }
+        }
+        while(ans.size() > 1 and ans.back() == '0')
+            ans.pop_back();
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
