@@ -26,3 +26,28 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int l = 0, r = matrix[0].size() - 1, t = 0, b = matrix.size() - 1;
+        vector<int> ans;
+        while(l <= r && t <= b) {
+            for(int j = l; j <= r and t <= b; j++)
+                ans.push_back(matrix[t][j]);
+            t++;
+            cout<<l<<" "<<r<<" "<<t<<" "<<b<<endl;
+            for(int i = t; i <= b and l <= r; i++)
+                ans.push_back(matrix[i][r]);
+            r--;
+            for(int j = r; j >= l and t <= b; j--)
+                ans.push_back(matrix[b][j]);
+            b--;
+            for(int i = b; i >= t  and l <= r; i--)
+                ans.push_back(matrix[i][l]);
+            l++;
+        }
+        return ans;
+    }
+};
