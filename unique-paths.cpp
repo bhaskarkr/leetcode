@@ -24,3 +24,23 @@ public:
         return numerator;
     }
 };
+
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        /**
+        * 8! / ((2!)*(6!))
+        */
+        long num = m + n - 2, deno = 1;
+        int diff = max(m, n) - min(m, n);
+        long ans = 1;
+        while(num >= max(m, n)) {
+            ans *= num;
+            num--;
+            ans /= deno;
+            deno++;
+        }
+        return ans;
+    }
+};
