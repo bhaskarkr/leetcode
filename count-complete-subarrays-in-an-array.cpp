@@ -15,3 +15,25 @@ public:
         return ans;
     }
 };
+
+
+
+class Solution {
+public:
+    int countCompleteSubarrays(vector<int>& nums) {
+        unordered_set<int> elements(nums.begin(), nums.end());
+        unordered_map<int, int> temp;
+        int ans = 0;
+        for(int l = 0, r = 0; r < nums.size(); r++) {
+            temp[nums[r]]++;
+            while(temp.size() == elements.size()) {
+                temp[nums[l]]--;
+                if(temp[nums[l]] == 0)
+                    temp.erase(nums[l]);
+                l++;
+            }
+            ans += l;
+        }
+        return ans;
+    }
+};
