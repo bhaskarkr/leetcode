@@ -53,3 +53,36 @@ public:
         return ans + num*sign;
     }
 };
+
+
+class Solution {
+public:
+    int index = 0;
+    int calculate(string s) {
+        int ans = 0, sign = 1, num = 0;
+        for(;index < s.length(); index++) {
+            if(s[index] == '(') {
+                ans += sign * num;
+                num = 0;
+                index++;
+                ans += sign * calculate(s);
+                sign = 1;
+            }
+            if(s[index] == '-' || s[index] =='+') {
+                ans += sign * num;
+                sign = s[index] == '+' ? 1 : -1;
+                num = 0;
+            }
+            if(s[index] == ')') {
+                ans += sign * num;
+                index++;
+                num = 0;
+                break;
+            }
+            if(isdigit(s[index])) {
+                num = num * 10 + (s[index] - '0');
+            }
+        }
+        return ans + sign * num;
+    }
+};
