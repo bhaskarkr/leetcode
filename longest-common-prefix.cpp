@@ -30,3 +30,21 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        string common = strs[0];
+        int ans = common.length();
+        for(string s : strs) {
+            int i = 0;
+            for(; i < s.length() and i < common.length(); i++) {
+                if(s[i] != common[i])
+                    break;
+            }
+            ans = min(ans, i);
+        }
+        return common.substr(0, ans);
+    }
+};
