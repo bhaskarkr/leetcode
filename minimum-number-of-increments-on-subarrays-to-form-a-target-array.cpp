@@ -7,3 +7,23 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    int minNumberOperations(vector<int>& target) {
+        vector<int> stk;
+        int ans = 0;
+        stk.push_back(0);
+        for(int num : target) {
+            if(stk.back() >= num)
+                while(stk.back() >= num)
+                    stk.pop_back();
+            else if(stk.back() < num) {
+                ans += num - stk.back();
+            }
+            stk.push_back(num);
+        }
+        return ans;
+    }
+};
