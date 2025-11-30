@@ -35,3 +35,26 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    string getKey(string &s) {
+        ostringstream key;
+        for(int i = 1; i < s.length(); i++) {
+            key << ' ' + ((s[i] - s[i-1] + 26) % 26);
+        }
+        return key.str();
+    }
+    vector<vector<string>> groupStrings(vector<string>& strings) {
+        unordered_map<string, vector<string>> umap;
+        vector<vector<string>> ans;
+        for(auto &s : strings) {
+            string temp = s;
+            umap[getKey(temp)].push_back(s);
+        }
+        for(auto &[k, v] : umap)
+            ans.push_back(v);
+        return ans;
+    }
+};
