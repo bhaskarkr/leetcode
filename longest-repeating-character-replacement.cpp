@@ -69,3 +69,28 @@ public:
 
     }
 };
+
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        unordered_set<char> uset(s.begin(), s.end());
+        int ans = 0;
+
+        for(char c : uset) {
+            int count = 0, K = k;
+            for(int r = 0, l = 0; r < s.length(); r++) {
+                while(K < 0 && l < r) {
+                    if(s[l] != c)
+                        K++;
+                    l++;
+                }
+                if(s[r] != c)
+                    K--;
+                if(K >= 0)
+                    ans = max(ans, r - l + 1);
+            }
+        }
+        return ans;
+    }
+};
