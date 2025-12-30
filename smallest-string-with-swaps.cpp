@@ -43,3 +43,43 @@ public:
         return s;
     }
 };
+
+
+class Solution {
+public:
+    int getParent(unordered_map<int, int> &parent, int x) {
+        if(parent[x] == x)
+            return x;
+        return parent[x] = getParent(parent, parent[x]);
+    }
+    string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) {
+        unordered_map<int, int> parent;
+        for(int i = 0; i < s.length(); i++) {
+            parent[i] = i;
+        }
+        for(auto p : pairs) {
+            int px = getParent(parent, p[0]);
+            int py = getParent(parent, p[1]);
+            int pp = min(px, py);
+            parent[px] = pp;
+            parent[py] = pp;
+        }
+
+        unordered_map<int, vector<int>> parentGroup;
+        for(auto [k, v] : parent) {
+            parentGroup[getParent(parent, v)].push_back(k);
+        }
+        string temp = s;
+        for(auto &[k, v] : parentGroup) {
+            vector<int> t(v.begin(), v.end());
+            sort(v.begin(), v.end(), [&](int a, int b) {
+                return temp[a] < temp[b];
+            });
+            sort(t.begin(), t.end());
+            for(int i = 0; i < v.size(); i++) {
+                s[t[i]] = temp[v[i]];
+            }
+        }
+        return s;
+    }
+};
