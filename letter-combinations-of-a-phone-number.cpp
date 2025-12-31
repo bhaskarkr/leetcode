@@ -25,3 +25,25 @@ public:
         return ans.size() == 1 ? vector<string>() : ans;
     }
 };
+
+
+class Solution {
+public:
+    vector<string> k = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}; 
+    void dfs(string s, vector<string> &ans, string &digits, int index) {
+        if(s.length() == digits.length()) {
+            ans.push_back(s);
+            return;
+        }
+        for(char c : k[digits[index] - '0']) {
+            s += c;
+            dfs(s, ans, digits, index + 1);
+            s.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        dfs("", ans, digits, 0);
+        return ans;
+    }
+};
