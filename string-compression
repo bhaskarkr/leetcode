@@ -38,3 +38,27 @@ public:
     //     return j;
     // }
 };
+
+
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+        int ans = 0;
+        for(int l = 0, r = 0; r < chars.size(); r++) {
+            int count = 1;
+            chars[l++] = chars[r];
+            while(r + 1 < chars.size() && chars[r] == chars[r+1]) {
+                r++;
+                count++;
+            }
+            string s = to_string(count);
+            if(count > 1) {
+                for(int k = 0; k < s.length(); k++, l++)
+                    chars[l] = s[k];
+                ans++;
+            }
+            ans += s.length();   
+        }
+        return ans;
+    }
+};
