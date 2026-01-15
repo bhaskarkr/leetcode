@@ -17,3 +17,26 @@ public:
         return helper(s, t, 0, 0);
     }
 };
+
+
+class Solution {
+public:
+    vector<vector<int>> memo;
+    int helper(string &s, string &t, int i1, int i2) {
+        if(i2 >= t.length() || i1 >= s.length()) {
+            return i2 >= t.length();
+        } 
+        if(memo[i1][i2] != -1)
+            return memo[i1][i2];
+
+        int ans = 0;
+        if(s[i1] == t[i2])
+            ans += helper(s, t, i1 + 1, i2 + 1);
+        ans += helper(s, t, i1 + 1, i2);
+        return memo[i1][i2] = ans;
+    }
+    int numDistinct(string s, string t) {
+        memo.resize(1001, vector<int>(1001, -1));
+        return helper(s, t, 0, 0);
+    }
+};
