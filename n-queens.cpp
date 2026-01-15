@@ -40,3 +40,54 @@ public:
         }
     }
 };
+
+
+
+class Solution {
+public:
+    vector<string> transformer(vector<int> nums) {
+        vector<string> ans;
+        for(int num: nums) {
+            string temp = string(nums.size(), '.');
+            for(int i = 0; i < nums.size(); i++) {
+                if((num >> i)&1)
+                    temp[i] = 'Q';
+            }
+            ans.push_back(temp);
+        }   
+        cout<<endl;
+        return ans;
+    }
+
+    void helper(vector<vector<string>> &ans,  vector<int> &tracker, int n) {
+        if(tracker.size() == n) {
+            ans.push_back(transformer(tracker));
+            return;
+        }
+        for(int pos = 0; pos < n; pos++) {
+            int curr = 1 << pos;
+            bool isValid = true;
+            for(int shift = 1; shift <= tracker.size(); shift++) {
+                int left = (curr << shift) & tracker[tracker.size() - shift];
+                int right = (curr >> shift) & tracker[tracker.size() - shift];
+                int col = curr & tracker[tracker.size() - shift];
+                if(left || right || col) {
+                    isValid = false;
+                    break;
+                }  
+            }
+            if(isValid) {
+                tracker.push_back(curr);
+                helper(ans, tracker, n);
+                tracker.pop_back();
+            }   
+        }
+
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<int> tracker;
+        vector<vector<string>> ans;
+        helper(ans, tracker, n);
+        return ans;
+    }
+};
