@@ -30,3 +30,22 @@ public:
         return uset.size() == 1 and *uset.begin() == '0' ? "0" : ans;
     }
 };
+
+
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        auto comp = [](int a, int b) {
+            return to_string(a) + to_string(b) > to_string(b) + to_string(a);
+        };
+        sort(nums.begin(), nums.end(), comp);
+        string ans;
+        for(int s : nums)
+            ans += to_string(s);
+        int i = 0;
+        while(i < ans.length() and ans[i] == '0')
+            i++;
+        ans = ans.substr(i);
+        return ans.length() == 0 ? "0" : ans;
+    }
+};
