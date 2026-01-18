@@ -25,3 +25,34 @@ public:
     }
 
 };
+
+
+class Solution {
+public:
+    void helper(vector<vector<int>> &ans, int index, vector<int>& candidates, vector<int> &curr, int target) {
+        if(index > candidates.size())
+            return;
+        if(target == 0) {
+            ans.push_back(curr);
+            return;
+        }
+        for(int i = index; i < candidates.size(); i++) {
+            if(i > index && candidates[i] == candidates[i-1])
+                continue;
+            if(target >= candidates[i]) {
+                curr.push_back(candidates[i]);
+                helper(ans, i + 1, candidates, curr, target - candidates[i]);
+                curr.pop_back();
+            }  
+        }           
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        int index = 0;
+        sort(candidates.begin(), candidates.end());
+        vector<vector<int>> ans;
+        vector<int> curr;
+        helper(ans, 0, candidates, curr, target);
+        return ans;
+    }
+};
