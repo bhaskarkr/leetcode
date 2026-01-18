@@ -59,3 +59,42 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int maxLength(vector<string>& arr) {
+        vector<pair<int, int>> q;
+        for(int i = 0; i < arr.size(); i++) {
+            int a = 0;
+            bool consider = true;
+            for(char c : arr[i]) {
+                if(a & (1 << (c - 'a'))) {
+                    consider = false;
+                    break;
+                }
+                a |= (1 << (c - 'a'));
+            }
+            if(consider) 
+                q.push_back({a, arr[i].length()});
+        }
+        int ans = 0;
+        for(int i = 1; i < (1 << q.size()); i++) {
+            int temp = 0;
+            int count = 0;
+            bool valid = true;
+            for(int j = 0; j < q.size(); j++) {
+                if(!((i >> j) & 1))
+                    continue;
+                if(temp & q[j].first) {
+                    valid = false;
+                    break;
+                }
+                temp |= q[j].first;
+                count += q[j].second;
+            }
+            if(valid)
+                ans = max(ans, count);   
+        }
+        return ans;
+    }
+};
