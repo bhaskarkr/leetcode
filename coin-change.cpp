@@ -16,3 +16,18 @@ public:
         return DP[amount] == INT_MAX ? -1 : DP[amount] ;
     }
 };
+
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<long> DP(amount + 1, INT_MAX);
+        DP[0] = 1;
+        for(int coin : coins) {
+            for(int i = coin; i <= amount; i++) {
+                if(DP[i-coin])
+                    DP[i] = min(DP[i-coin] + 1, DP[i]);
+            }
+        }
+        return DP.back() == INT_MAX ? -1 : DP.back() - 1;
+    }
+};
