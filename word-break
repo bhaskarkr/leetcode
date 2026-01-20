@@ -74,3 +74,26 @@ public:
         return helper(s, wordDict, 0);
     }
 };
+
+
+class Solution {
+public:
+    unordered_map<int, int> DP;
+    bool helper(int index, string &s, vector<string>& wordDict) {
+        if(index >= s.length())
+            return true;
+        if(DP.find(index) != DP.end()) {
+            return DP[index];
+        }
+
+        for(string word : wordDict) {
+            if(s.substr(index, word.length()) == word && helper(index + word.length(), s, wordDict))
+                return DP[index] = true;
+        }
+
+        return DP[index] = false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        return helper(0, s, wordDict);
+    }  
+};
