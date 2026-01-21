@@ -34,3 +34,30 @@ public:
         return efforts[m-1][n-1];
     }
 };
+
+
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        pq.push({0, 0, 0});
+        vector<int> dx = {-1, 0, 1, 0}, dy = {0, -1, 0, 1};
+        vector<vector<long>> dist(heights.size(), vector<long>(heights[0].size(), INT_MAX));
+        dist[0][0] = 0;
+        while(!pq.empty()) {
+            auto curr = pq.top();
+            if(curr[1] == heights.size() - 1 && curr[2] == heights[0].size() - 1)
+                return curr[0];
+            pq.pop();
+            for(int d = 0; d < 4; d++) {
+                int nx = curr[1] + dx[d];
+                int ny = curr[2] + dy[d];
+                if(nx < 0 || ny < 0 || nx >= heights.size() || ny >= heights[0].size() || dist[nx][ny] <= abs(heights[nx][ny] - heights[curr[1]][curr[2]]))
+                    continue;
+                dist[nx][ny] = abs(heights[nx][ny] - heights[curr[1]][curr[2]]);
+                pq.push({max(curr[0], abs(heights[nx][ny] - heights[curr[1]][curr[2]])), nx, ny});
+            }
+        }
+        return -1;
+    }
+};
