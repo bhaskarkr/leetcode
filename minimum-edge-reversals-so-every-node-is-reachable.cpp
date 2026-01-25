@@ -28,3 +28,37 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    vector<int> minEdgeReversals(int n, vector<vector<int>>& edges) {
+        unordered_map<int, unordered_map<int, int>> umap;
+        vector<int> ans(n, -1);
+        for(auto &edge : edges) {
+            umap[edge[0]][edge[1]] = 0;
+            umap[edge[1]][edge[0]] = 1;
+        }
+
+        function<int(int, int)> dp = [&](int parent, int curr) {
+            int sum = 0;
+             for(auto &[child, cost] : umap[curr]) {
+                if(child == parent)
+                    continue;
+                sum += dp(curr, child) + cost;
+            }
+            return sum;
+        };
+
+        function<void(int, int)> dfs = [&](int curr, int val) {
+            ans[curr] = val;
+            for(auto [child, cost] : umap[curr])
+                if(ans[child] < 0) {
+                    dfs(child, val - cost + umap[child][curr]);
+                }
+        };
+
+        dfs(0, dp(-1, 0));
+        return ans;
+    }
+};
