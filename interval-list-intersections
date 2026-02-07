@@ -27,3 +27,26 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        int l = 0, r = 0, m = firstList.size(), n = secondList.size();
+        vector<vector<int>> ans;
+        while(l < m && r < n) {
+            if(firstList[l][1] < secondList[r][0])
+                l++;
+            else if(firstList[l][0] > secondList[r][1])
+                r++;
+            else {
+                ans.push_back({max(firstList[l][0], secondList[r][0]), min(firstList[l][1], secondList[r][1])});
+                if(firstList[l][1] < secondList[r][1])
+                    l++;
+                else 
+                    r++;
+            }   
+        }
+        return ans;
+    }
+};
