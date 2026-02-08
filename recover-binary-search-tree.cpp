@@ -12,6 +12,39 @@
 class Solution {
 public:
     void recoverTree(TreeNode* root) {
+        TreeNode* first = NULL, *second = NULL, *prev = new TreeNode(INT_MIN);
+        function<void(TreeNode*)> dfs = [&](TreeNode* node) {
+            if(!node)
+                return;
+            dfs(node->left);
+            if(node->val < prev->val && !first) {
+                first = prev;
+            }
+            if(node->val < prev->val && first) {
+                second = node;
+            }
+            prev = node;
+            dfs(node->right);
+        };
+        dfs(root);
+        swap(first->val, second->val);
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
         vector<TreeNode*> order;
         function<void(TreeNode*)> dfs = [&](TreeNode* node) {
             if(!node)
