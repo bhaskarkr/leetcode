@@ -14,3 +14,19 @@ public:
         return DP.back();
     }
 };
+
+class Solution {
+public:
+    int minimumDeletions(string s) {
+        int deleteCount = 0;
+        int b = 0;
+        for(int i = 1; i <= s.length(); i++) {
+            if(s[i-1] == 'b') {
+                b++;
+            } else {
+                deleteCount = min(b, deleteCount + 1);
+            }
+        }
+        return deleteCount;
+    }
+};
