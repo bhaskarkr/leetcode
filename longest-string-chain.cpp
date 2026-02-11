@@ -36,3 +36,24 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(), words.end(), [](string a, string b) {
+            if(a.length() == b.length())
+                return a < b;
+            return a.length() < b.length();
+        });
+        unordered_map<string, int> umap;
+        int ans = 0;
+        for(string s : words) {
+            for(int i = 0; i < s.length(); i++) {
+                string temp = s.substr(0, i) + s.substr(i+1);
+                umap[s] = max(umap[s], umap[temp] + 1);
+            }
+            ans = max(umap[s], ans);
+        }
+        return ans;
+    }
+};
