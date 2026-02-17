@@ -17,3 +17,19 @@ public:
         return 1.0 < DP[query_glass] ?  1.0 : DP[query_glass];
     }
 };
+
+
+class Solution {
+public:
+    double champagneTower(int poured, int query_row, int query_glass) {
+        vector<double> DP(102);
+        DP[0] = poured;
+        for(int row = 1; row <= query_row; row++) {
+            for(int glass = row - 1; glass >= 0; glass--) {
+                DP[glass] = (DP[glass] - 1) / 2.0 < 0 ? 0.0 :  (DP[glass] - 1) / 2.0;
+                DP[glass + 1] += DP[glass];
+            }
+        }
+        return DP[query_glass] > 1.0 ? 1.0 : DP[query_glass];
+    }
+};
