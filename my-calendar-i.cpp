@@ -16,3 +16,28 @@ public:
         return true;
     }
 };
+
+
+class MyCalendar {
+public:
+    map<int, int> umap;
+    MyCalendar() {
+        
+    }
+    
+    bool book(int startTime, int endTime) {
+        auto itr = umap.lower_bound(endTime);
+        if(itr != umap.begin() && prev(itr)->second > startTime) {
+            return false;
+        }
+        umap[startTime] = endTime;
+        return true;
+            
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(startTime,endTime);
+ */
