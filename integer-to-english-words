@@ -96,3 +96,52 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    string numberToWords(int num) {
+        vector<string> oneTo19 = {
+            "", "One", "Two", "Three", "Four", "Five", "Six",
+            "Seven", "Eight", "Nine", "Ten", "Eleven",
+            "Twelve", "Thirteen", "Fourteen", "Fifteen", 
+            "Sixteen", "Seventeen", "Eighteen", "Nineteen"
+        };
+        vector<string> tens = {
+            "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy",
+            "Eighty", "Ninety"
+        };
+        vector<string> others = {
+            "", "Thousand", "Million", "Billion"
+        };
+        if(num == 0)  
+            return "Zero"; 
+        function<string(int)> helper = [&](int n) {
+            string s = "";
+            if(n == 0)
+                return s;
+            else if(n < 20)
+                s = oneTo19[n] + " ";
+            else if(n < 100) {
+                s += tens[n / 10] + " " + helper(n % 10);
+            } 
+            else if(n < 1000) {
+                s += oneTo19[n/100] + " Hundred " + helper(n % 100);
+            }
+            return s;
+        };
+        string ans;
+        int thousands = 0; 
+        while(num > 0) {
+            if(num % 1000) {
+                ans = helper(num % 1000) + others[thousands] + " " + ans;
+            }
+            num /= 1000;
+            thousands++;
+        }
+
+        while(!ans.empty() && ans.back() == ' ')
+            ans.pop_back();
+        return ans;
+    }
+};
