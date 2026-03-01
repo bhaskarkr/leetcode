@@ -57,3 +57,21 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        unordered_map<string, int> umap;
+        sort(words.begin(), words.end(), [&](auto a, auto b) {
+            return a.length() < b.length();
+        });
+        int ans = 0;
+        for(string s : words) {
+            for(int i = 0; i < s.length(); i++) {
+                umap[s] = max(umap[s], umap[s.substr(0, i) + s.substr(i + 1)] + 1);
+            }
+            ans = max(umap[s], ans);
+        }
+        return ans;
+    }
+};
