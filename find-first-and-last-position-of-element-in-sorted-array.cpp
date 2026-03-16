@@ -12,3 +12,16 @@ public:
         return {a, b};
     }
 };
+
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        auto a = lower_bound(nums.begin(), nums.end(), target);
+        if(a == nums.end() ||*(a) != target)
+            return {-1, -1};
+        int b = prev(upper_bound(a, nums.end(), target)) - nums.begin();
+        int f = a - nums.begin();
+        return {f, b};
+    }
+};
